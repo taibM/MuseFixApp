@@ -3,85 +3,44 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
-/**
- * Commande
- *
- * @ORM\Table(name="commande", indexes={@ORM\Index(name="userID", columns={"userID"}), @ORM\Index(name="idPanier", columns={"idPanier"})})
- * @ORM\Entity
- */
+use App\Repository\CommandeRepository;
+#[ORM\Entity(repositoryClass:CommandeRepository::class)]
 class Commande
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idCommande", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idcommande;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $idCommande = null ;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="orderDate", type="datetime", nullable=false)
-     */
-    private $orderdate;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=0, nullable=false)
-     */
-    private $status;
+    #[ORM\Column(length:150)]
+    private ? DateTime $orderDate = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="modePaiement", type="string", length=0, nullable=false)
-     */
-    private $modepaiement;
+    #[ORM\Column(length:150)]
+    private ? string $status = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="adresseLivraison", type="string", length=255, nullable=false)
-     */
-    private $adresselivraison;
+    #[ORM\Column(length:150)]
+    private ? string $modePaiement = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="fraisLivraison", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $fraislivraison;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $total;
+    #[ORM\Column(length:150)]
+    private ? string $adresseLivraison = null;
 
-    /**
-     * @var \Panier
-     *
-     * @ORM\ManyToOne(targetEntity="Panier")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idPanier", referencedColumnName="idPanier")
-     * })
-     */
-    private $idpanier;
 
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="userID", referencedColumnName="userID")
-     * })
-     */
-    private $userid;
+    #[ORM\Column(length:150)]
+    private ? float $fraisLivraison = null;
+
+    #[ORM\Column(length:150)]
+    private ? float $total = null;
+
+
+    #[ORM\ManyToOne(inversedBy:'Commandes')]
+    private ?Panier $idPanier = null ;
+
+
+    #[ORM\ManyToOne(inversedBy:'Commandes')]
+    private ?User $userID = null ;
+
 
 
 }

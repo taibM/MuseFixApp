@@ -22,11 +22,11 @@ class Panier
     private ? float $sousTotal = null;
 
 
-    #[ORM\ManyToOne(inversedBy:'paniers')]
+    #[ORM\ManyToOne(inversedBy:'Paniers')]
     private ?User $userID = null ;
 
 
-    #[ORM\ManyToOne(inversedBy:'paniers')]
+    #[ORM\ManyToOne(inversedBy:'Paniers')]
     private ?Produit $idProduit = null ;
 
     public function getIdpanier(): ?int
