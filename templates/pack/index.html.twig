@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pack index{% endblock %}
+
+{% block body %}
+    <h1>Pack index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdPack</th>
+                <th>TypePack</th>
+                <th>Prix</th>
+                <th>Avantage</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pack in packs %}
+            <tr>
+                <td>{{ pack.idPack }}</td>
+                <td>{{ pack.typePack }}</td>
+                <td>{{ pack.prix }}</td>
+                <td>{{ pack.avantage }}</td>
+                <td>
+                    <a href="{{ path('app_pack_show', {'idPack': pack.idPack}) }}">show</a>
+                    <a href="{{ path('app_pack_edit', {'idPack': pack.idPack}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_pack_new') }}">Create new</a>
+{% endblock %}

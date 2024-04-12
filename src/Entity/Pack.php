@@ -2,32 +2,26 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PackRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
-
-use App\repository\abonnementRepository;
-#[ORM\Entity(repositoryClass:packRepository::class)]
-class pack
+#[ORM\Entity(repositoryClass: PackRepository::class)]
+class Pack
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $idPack = null;   
 
-   
-    #[ORM\Column(Length:255)]
-    private ?string $typePack=null; 
-    
+    #[ORM\Column(length: 255)]
+    private ?string $typePack = null; 
 
+    #[ORM\Column(type: 'float')]
+    private ?float $prix = null;
 
-    
-    #[ORM\Column]
-    private ? float $prix=null;
-
-
-    #[ORM\Column(Length:255)]
-    private ?string $avantage=null;
+    #[ORM\Column(length: 255)]
+    private ?string $avantage = null;
 
     public function getIdpack(): ?int
     {

@@ -2,35 +2,33 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\AbonnementRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
-use App\repository\abonnementRepository;
-#[ORM\Entity(repositoryClass:abonnementRepository::class)]
-class abonnement
+#[ORM\Entity(repositoryClass:AbonnementRepository::class)]
+class Abonnement
 {
-   #[ORM\Id]
-   #[ORM\GeneratedValue]
-   #[ORM\Column]
-   private ?int $idAbonnement = null ;   
- 
-#[ORM\Column(length:150)]
-private ? date $dateDeb=null; 
-    
-#[ORM\Column(length:150)]
-private ? date $dateFin=null; 
-           
-   
-   #[ORM\ManyToOne(inversedBy:'abonnement')]
-     private ?User $userID = null ; 
-      
-     #[ORM\ManyToOne(inversedBy:'abonnement')]
-     private ?Pack $idPack = null ; 
-   
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $idAbonnement = null;
 
-    public function getIdabonnement(): ?int
+    #[ORM\Column(length: 150)]
+    private ?\DateTimeInterface $datedeb = null;
+
+    #[ORM\Column(length: 150)]
+    private ?\DateTimeInterface $datefin = null;
+
+    #[ORM\ManyToOne(inversedBy: 'abonnement')]
+    private ?User $userID = null;
+
+    #[ORM\ManyToOne(inversedBy: 'abonnement')]
+    private ?Pack $idPack = null;
+
+    public function getIdAbonnement(): ?int
     {
-        return $this->idabonnement;
+        return $this->idAbonnement;
     }
 
     public function getDatedeb(): ?\DateTimeInterface
@@ -38,10 +36,9 @@ private ? date $dateFin=null;
         return $this->datedeb;
     }
 
-    public function setDatedeb(\DateTimeInterface $datedeb): static
+    public function setDatedeb(\DateTimeInterface $datedeb): self
     {
         $this->datedeb = $datedeb;
-
         return $this;
     }
 
@@ -50,36 +47,31 @@ private ? date $dateFin=null;
         return $this->datefin;
     }
 
-    public function setDatefin(\DateTimeInterface $datefin): static
+    public function setDatefin(\DateTimeInterface $datefin): self
     {
         $this->datefin = $datefin;
-
         return $this;
     }
 
-    public function getUserid(): ?User
+    public function getUserID(): ?User
     {
-        return $this->userid;
+        return $this->userID;
     }
 
-    public function setUserid(?User $userid): static
+    public function setUserID(?User $userID): self
     {
-        $this->userid = $userid;
-
+        $this->userID = $userID;
         return $this;
     }
 
-    public function getIdpack(): ?Pack
+    public function getIdPack(): ?Pack
     {
-        return $this->idpack;
+        return $this->idPack;
     }
 
-    public function setIdpack(?Pack $idpack): static
+    public function setIdPack(?Pack $idPack): self
     {
-        $this->idpack = $idpack;
-
+        $this->idPack = $idPack;
         return $this;
     }
-
-
 }
