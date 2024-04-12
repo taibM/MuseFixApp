@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <h1>Ajout Etudiant</h1>
+    {{ form(PanierType) }}
+</head>
+<body>
+{% block body %}
+    <h1>Ajouter un étudiant</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}} )}}
+
+    <table>
+        <tr>
+            <td>{{ form_label(form.nsc, "Numéro d'inscription") }}</td>
+            <td>{{ form_widget(form.nsc) }}</td>
+            <td>{{ form_errors(form.nsc) }}</td>
+        </tr>
+        <tr>
+            <td>{{ form_label(form.email, "Email") }}</td>
+            <td>{{ form_widget(form.email) }}</td>
+            <td>{{ form_errors(form.email) }}</td>
+        </tr>
+    </table>
+
+    {{ form_widget(form.save) }}
+
+    {{ form_end(form) }}
+{% endblock %}
+</body>
+</html>

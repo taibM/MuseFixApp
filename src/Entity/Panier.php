@@ -2,39 +2,44 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+
 use App\Repository\PanierRepository;
-#[ORM\Entity(repositoryClass:PanierRepository::class)]
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: PanierRepository::class)]
 class Panier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Column(name: "idPanier")]
+    private ?int $id = null;
+
     #[ORM\Column]
-    private ?int $idPanier = null ;
-
-    #[ORM\Column(length:150)]
-    private ? int $qte = null;
-
-    #[ORM\Column(length:150)]
-    private ? float $prixUnite = null;
-
-    #[ORM\Column(length:150)]
-    private ? float $sousTotal = null;
+    private ?int $qte = null;
 
 
-    #[ORM\ManyToOne(inversedBy:'Paniers')]
-    private ?User $userID = null ;
+    #[ORM\Column(name: "prixUnite")]
+    private ?float $prixUnite = null;
+
+    #[ORM\Column(name: "sousTotal")]
+    private ?float $sousTotal = null;
 
 
-    #[ORM\ManyToOne(inversedBy:'Paniers')]
-    private ?Produit $idProduit = null ;
+    #[ORM\ManyToOne(inversedBy: "paniers")]
+    #[ORM\JoinColumn(name: "userID", referencedColumnName: "id")]
+    private ?User $userid = null;
 
-    public function getIdpanier(): ?int
+
+    #[ORM\ManyToOne(inversedBy: "paniers")]
+    #[ORM\JoinColumn(name: "idProduit", referencedColumnName: "id")]
+    private ?Produit $idproduit = null;
+
+    public function getId(): ?int
     {
-        return $this->idpanier;
+        return $this->id;
     }
 
-    public function getQte(): ?int
+    public function getqte(): ?int
     {
         return $this->qte;
     }
@@ -46,26 +51,26 @@ class Panier
         return $this;
     }
 
-    public function getPrixunite(): ?float
+    public function getPrixUnite(): ?float
     {
-        return $this->prixunite;
+        return $this->prixUnite;
     }
 
-    public function setPrixunite(float $prixunite): static
+    public function setPrixUnite(float $prixUnite): static
     {
-        $this->prixunite = $prixunite;
+        $this->prixUnite = $prixUnite;
 
         return $this;
     }
 
-    public function getSoustotal(): ?float
+    public function getSousTotal(): ?float
     {
-        return $this->soustotal;
+        return $this->sousTotal;
     }
 
-    public function setSoustotal(float $soustotal): static
+    public function setSousTotal(float $sousTotal): static
     {
-        $this->soustotal = $soustotal;
+        $this->sousTotal = $sousTotal;
 
         return $this;
     }
@@ -93,6 +98,10 @@ class Panier
 
         return $this;
     }
+
+
+
+
 
 
 }

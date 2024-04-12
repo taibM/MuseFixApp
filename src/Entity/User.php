@@ -2,80 +2,174 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * User
- *
- * @ORM\Table(name="user")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="userID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $userid;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    public ?int $id = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $prenom = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $passwd = null;
+
+    #[ORM\Column]
+    private ?\DateTimeInterface $signUpDate = null;
+
+    #[ORM\Column]
+    private ?int $role = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $adresse = null;
+
+    #[ORM\Column]
+    private ?int $tel = null;
+
+    #[ORM\OneToMany(mappedBy: "userid", targetEntity: Panier::class)]
+    private Collection $paniers;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getPasswd(): ?string
+    {
+        return $this->passwd;
+    }
+
+    public function setPasswd(string $passwd): self
+    {
+        $this->passwd = $passwd;
+
+        return $this;
+    }
+
+    public function getSignUpDate(): ?\DateTimeInterface
+    {
+        return $this->signUpDate;
+    }
+
+    public function setSignUpDate(\DateTimeInterface $signUpDate): self
+    {
+        $this->signUpDate = $signUpDate;
+
+        return $this;
+    }
+
+    public function getRole(): ?int
+    {
+        return $this->role;
+    }
+
+    public function setRole(int $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getTel(): ?int
+    {
+        return $this->tel;
+    }
+
+    public function setTel(int $tel): self
+    {
+        $this->tel = $tel;
+
+        return $this;
+    }
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=255, nullable=false)
+     * @return Collection|Panier[]
      */
-    private $nom;
+    public function getPaniers(): Collection
+    {
+        return $this->paniers;
+    }
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=255, nullable=false)
-     */
-    private $prenom;
+    public function addPanier(Panier $panier): self
+    {
+        if (!$this->paniers->contains($panier)) {
+            $this->paniers[] = $panier;
+            $panier->setUserid($this);
+        }
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=false)
-     */
-    private $email;
+        return $this;
+    }
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="passwd", type="string", length=255, nullable=false)
-     */
-    private $passwd;
+    public function removePanier(Panier $panier): self
+    {
+        if ($this->paniers->removeElement($panier)) {
+            // set the owning side to null (unless already changed)
+            if ($panier->getUserid() === $this) {
+                $panier->setUserid(null);
+            }
+        }
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="signUpDate", type="datetime", nullable=false)
-     */
-    private $signupdate;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="role", type="integer", nullable=false)
-     */
-    private $role;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="adresse", type="string", length=255, nullable=false)
-     */
-    private $adresse;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="tel", type="integer", nullable=false)
-     */
-    private $tel;
-
+        return $this;
+    }
 
 }

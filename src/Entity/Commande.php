@@ -2,44 +2,143 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+
 use App\Repository\CommandeRepository;
-#[ORM\Entity(repositoryClass:CommandeRepository::class)]
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idCommande = null ;
+    private ?int $id = null;
+
+    #[ORM\Column]
+    private ?\DateTimeInterface $orderDate = null;
+
+    #[ORM\Column(type: "enum", options: ["livree", "annule", "enCours"])]
+    private ?string $status = null;
+
+    #[ORM\Column(type: "enum", options: ["carte", "liquide", "paypal"])]
+    private ?string $modePaiement = null;
+
+    #[ORM\Column(type: "string", length: 255)]
+    private ?string $adresseLivraison = null;
+
+    #[ORM\Column(type: "float")]
+    private ?float $fraisLivraison = null;
+
+    #[ORM\Column(type: "float")]
+    private ?float $total = null;
 
 
-    #[ORM\Column(length:150)]
-    private  ?\DateTime $orderDate = null;
+    #[ORM\ManyToOne(inversedBy: "commandes")]
+    private ?User $userid = null;
 
-    #[ORM\Column(length:150)]
-    private ? string $status = null;
+    #[ORM\ManyToOne(inversedBy: "commandes")]
+    private ?Panier $idpanier = null;
 
-    #[ORM\Column(length:150)]
-    private ? string $modePaiement = null;
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
+    public function getOrderDate(): ?string
+    {
+        return $this->orderDate;
+    }
 
-    #[ORM\Column(length:150)]
-    private ? string $adresseLivraison = null;
+    public function setOrderDate(string $orderDate): static
+    {
+        $this->orderDate = $orderDate;
 
+        return $this;
+    }
 
-    #[ORM\Column(length:150)]
-    private ? float $fraisLivraison = null;
+    public function getStatus()
+    {
+        return $this->status;
+    }
 
-    #[ORM\Column(length:150)]
-    private ? float $total = null;
+    public function setStatus($status): static
+    {
+        $this->status = $status;
 
+        return $this;
+    }
 
-    #[ORM\ManyToOne(inversedBy:'Commandes')]
-    private ?Panier $idPanier = null ;
+    public function getModePaiement()
+    {
+        return $this->modePaiement;
+    }
 
+    public function setModePaiement($modePaiement): static
+    {
+        $this->modePaiement = $modePaiement;
 
-    #[ORM\ManyToOne(inversedBy:'Commandes')]
-    private ?User $userID = null ;
+        return $this;
+    }
+
+    public function getAdresseLivraison(): ?string
+    {
+        return $this->adresseLivraison;
+    }
+
+    public function setAdresseLivraison(string $adresseLivraison): static
+    {
+        $this->adresseLivraison = $adresseLivraison;
+
+        return $this;
+    }
+
+    public function getFraisLivraison(): ?float
+    {
+        return $this->fraisLivraison;
+    }
+
+    public function setFraisLivraison(float $fraisLivraison): static
+    {
+        $this->fraisLivraison = $fraisLivraison;
+
+        return $this;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->total;
+    }
+
+    public function setTotal(float $total): static
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    public function getUserid(): ?User
+    {
+        return $this->userid;
+    }
+
+    public function setUserid(?User $userid): static
+    {
+        $this->userid = $userid;
+
+        return $this;
+    }
+
+    public function getIdpanier(): ?Panier
+    {
+        return $this->idpanier;
+    }
+
+    public function setIdpanier(?Panier $idpanier): static
+    {
+        $this->idpanier = $idpanier;
+
+        return $this;
+    }
 
 
 
