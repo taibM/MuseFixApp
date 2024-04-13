@@ -18,8 +18,7 @@ class CommandeType extends AbstractType
             ->add('adresseLivraison')
             ->add('fraisLivraison')
             ->add('total')
-            ->add('idPanier')
-            ->add('userID')
+            ->add('userid')
         ;
     }
 

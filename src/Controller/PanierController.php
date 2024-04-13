@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Panier;
+use App\Entity\User;
 use App\Form\PanierType;
 use App\Repository\PanierRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,17 +25,17 @@ class PanierController extends AbstractController
     }
 
     #[Route('/new', name: 'app_panier_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $repuser ): Response
     {
         $panier = new Panier();
-        $user = $this->getUser(); // Obtenez l'utilisateur actuellement authentifié
 
-        $panier->setUserid($user); // Assurez-vous de définir la propriété userid avec l'utilisateur
 
         $form = $this->createForm(PanierType::class, $panier);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser(); // Obtenez l'utilisateur actuellement authentifié
+            $panier->setUserid($user); // Assurez-vous de définir la propriété userid avec l'utilisateur
             $entityManager->persist($panier);
             $entityManager->flush();
 

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-
 use App\Repository\CommandeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,69 +10,70 @@ class Commande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: "idCommande")]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: 'orderDate', type: 'datetime')]
     private ?\DateTimeInterface $orderDate = null;
 
-    #[ORM\Column(type: "enum", options: ["livree", "annule", "enCours"])]
+
+    #[ORM\Column(name: 'status', type: "enum", options: ["livree", "annule", "enCours"])]
     private ?string $status = null;
 
-    #[ORM\Column(type: "enum", options: ["carte", "liquide", "paypal"])]
+    #[ORM\Column(name: 'modePaiement', type: "enum", options: ["carte", "liquide", "paypal"])]
     private ?string $modePaiement = null;
 
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(name: 'adresseLivraison', type: "string", length: 255)]
     private ?string $adresseLivraison = null;
 
-    #[ORM\Column(type: "float")]
+    #[ORM\Column(name: 'fraisLivraison', type: "float")]
     private ?float $fraisLivraison = null;
 
-    #[ORM\Column(type: "float")]
+    #[ORM\Column(name: 'total', type: "float")]
     private ?float $total = null;
 
-
     #[ORM\ManyToOne(inversedBy: "commandes")]
+    #[ORM\JoinColumn(name: "userID", referencedColumnName: "id")]
     private ?User $userid = null;
 
-    #[ORM\ManyToOne(inversedBy: "commandes")]
-    private ?Panier $idpanier = null;
+
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getOrderDate(): ?string
+    public function getOrderDate(): ?\DateTimeInterface
     {
         return $this->orderDate;
     }
 
-    public function setOrderDate(string $orderDate): static
+    public function setOrderDate(?\DateTimeInterface $orderDate): static
     {
         $this->orderDate = $orderDate;
 
         return $this;
     }
 
-    public function getStatus()
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    public function setStatus($status): static
+    public function setStatus(?string $status): static
     {
         $this->status = $status;
 
         return $this;
     }
 
-    public function getModePaiement()
+    public function getModePaiement(): ?string
     {
         return $this->modePaiement;
     }
 
-    public function setModePaiement($modePaiement): static
+    public function setModePaiement(?string $modePaiement): static
     {
         $this->modePaiement = $modePaiement;
 
@@ -85,7 +85,7 @@ class Commande
         return $this->adresseLivraison;
     }
 
-    public function setAdresseLivraison(string $adresseLivraison): static
+    public function setAdresseLivraison(?string $adresseLivraison): static
     {
         $this->adresseLivraison = $adresseLivraison;
 
@@ -97,7 +97,7 @@ class Commande
         return $this->fraisLivraison;
     }
 
-    public function setFraisLivraison(float $fraisLivraison): static
+    public function setFraisLivraison(?float $fraisLivraison): static
     {
         $this->fraisLivraison = $fraisLivraison;
 
@@ -109,7 +109,7 @@ class Commande
         return $this->total;
     }
 
-    public function setTotal(float $total): static
+    public function setTotal(?float $total): static
     {
         $this->total = $total;
 
@@ -128,18 +128,15 @@ class Commande
         return $this;
     }
 
-    public function getIdpanier(): ?Panier
+    public function getIdPanier(): ?Panier
     {
-        return $this->idpanier;
+        return $this->idPanier;
     }
 
-    public function setIdpanier(?Panier $idpanier): static
+    public function setIdPanier(?Panier $idPanier): static
     {
-        $this->idpanier = $idpanier;
+        $this->idPanier = $idPanier;
 
         return $this;
     }
-
-
-
 }

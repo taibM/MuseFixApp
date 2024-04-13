@@ -4,7 +4,9 @@ namespace App\Entity;
 
 
 use App\Repository\PanierRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 
 #[ORM\Entity(repositoryClass: PanierRepository::class)]
 class Panier
@@ -25,7 +27,7 @@ class Panier
     private ?float $sousTotal = null;
 
 
-    #[ORM\ManyToOne(inversedBy: "paniers")]
+    #[ORM\ManyToOne(inversedBy: 'paniers')]
     #[ORM\JoinColumn(name: "userID", referencedColumnName: "id")]
     private ?User $userid = null;
 
@@ -33,6 +35,7 @@ class Panier
     #[ORM\ManyToOne(inversedBy: "paniers")]
     #[ORM\JoinColumn(name: "idProduit", referencedColumnName: "id")]
     private ?Produit $idproduit = null;
+
 
     public function getId(): ?int
     {
@@ -75,17 +78,7 @@ class Panier
         return $this;
     }
 
-    public function getUserid(): ?User
-    {
-        return $this->userid;
-    }
 
-    public function setUserid(?User $userid): static
-    {
-        $this->userid = $userid;
-
-        return $this;
-    }
 
     public function getIdproduit(): ?Produit
     {
@@ -99,9 +92,17 @@ class Panier
         return $this;
     }
 
+    public function getUserid(): ?User
+    {
+        return $this->userid;
+    }
 
+    public function setUserid(?User $userid): static
+    {
+        $this->userid = $userid;
 
-
+        return $this;
+    }
 
 
 }

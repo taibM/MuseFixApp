@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +41,14 @@ class User
 
     #[ORM\OneToMany(mappedBy: "userid", targetEntity: Panier::class)]
     private Collection $paniers;
+
+    #[ORM\OneToMany(mappedBy: "userid", targetEntity: Commande::class)]
+    private Collection $commandes;
+
+    public function __construct()
+    {
+        $this->paniers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

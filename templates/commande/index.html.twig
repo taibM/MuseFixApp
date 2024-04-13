@@ -8,7 +8,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>IdCommande</th>
+                <th>Id</th>
                 <th>OrderDate</th>
                 <th>Status</th>
                 <th>ModePaiement</th>
@@ -21,7 +21,7 @@
         <tbody>
         {% for commande in commandes %}
             <tr>
-                <td>{{ commande.idCommande }}</td>
+                <td>{{ commande.id }}</td>
                 <td>{{ commande.orderDate ? commande.orderDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ commande.status }}</td>
                 <td>{{ commande.modePaiement }}</td>
@@ -29,8 +29,8 @@
                 <td>{{ commande.fraisLivraison }}</td>
                 <td>{{ commande.total }}</td>
                 <td>
-                    <a href="{{ path('app_commande_show', {'idCommande': commande.idCommande}) }}">show</a>
-                    <a href="{{ path('app_commande_edit', {'idCommande': commande.idCommande}) }}">edit</a>
+                    <a href="{{ path('app_commande_show', {'id': commande.id}) }}">show</a>
+                    <a href="{{ path('app_commande_edit', {'id': commande.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
