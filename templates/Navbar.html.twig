@@ -1,0 +1,42 @@
+<!--  Pré-en-tête  -->
+<div class="pre-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-sm-6">
+                <span>Hé ! Le spectacle commence dans 15 jours.</span>
+            </div>
+            <div class="col-lg-6 col-sm-6">
+                <div class="text-button">
+                    <a href="#">Contactez-nous maintenant ! <i class="fa fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  En-tête Début  -->
+<header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!--  Logo Début  -->
+                    <a href="{{ path('app_default') }}" class="logo">Art<em>Xibition</em></a>
+                    <!--  Logo Fin  -->
+                    <!--  Menu Début  -->
+                    <ul class="nav">
+                        <li><a href="{{ path('app_default') }}" class="active">Accueil</a></li>
+                        <li><a href="#">À propos de nous</a></li>
+                        <li><a href="{{ path('app_abonnement_index') }}">abonnement</a></li>
+                        <li><a href="{{ path('app_pack_index') }}">pack</a></li>
+                        <li><a href="#">Billets</a></li>
+                    </ul>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!--  Menu Fin  -->
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>

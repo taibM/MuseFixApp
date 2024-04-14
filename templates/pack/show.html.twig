@@ -1,36 +1,54 @@
-{% extends 'base.html.twig' %}
+{%  include 'Navbar.html.twig' %} 
 
-{% block title %}Pack{% endblock %}
+{% block css %}
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/owl-carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tooplate-artxibition.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/abonnementindex.css') }}">
+{% endblock %}
 
 {% block body %}
-    <h1>Liste des Packs </h1>
+    <h1 style="padding-left: 650px;padding-top: 20px">Pack</h1> 
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>IdPack :</th>
-                <td>{{ pack.idPack }}</td>
-            </tr>
-            <tr>
-                <th>TypePack :</th>
-                <td>{{ pack.typePack }}</td>
-            </tr>
-            <tr>
-                <th>Prix :</th>
-                <td>{{ pack.prix }}</td>
-            </tr>
-            <tr>
-                <th>Avantage :</th>
-                <td>{{ pack.avantage }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div style="padding-top: 40px" class="px-4 px-lg-0">
+        <div class="pb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+                        <!-- Pack details -->
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>IdPack :</th>
+                                    <td>{{ pack.idPack }}</td>
+                                </tr>
+                                <tr>
+                                    <th>TypePack :</th>
+                                    <td>{{ pack.typePack }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Prix :</th>
+                                    <td>{{ pack.prix }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Avantage:</th>
+                                    <td>{{ pack.avantage }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-    <a href="{{ path('app_pack_index') }}">back to list</a>  
-    &nbsp;&nbsp; 
-
-    <a href="{{ path('app_pack_edit', {'idPack': pack.idPack}) }}">edit</a>
-
-
-    {{ include('pack/_delete_form.html.twig') }}
+                        <a href="{{ path('app_pack_index') }}" class="back-btn">back to list</a>
+                        <a href="{{ path('app_pack_edit', {'idPack': pack.idPack}) }}" class="edit-btn">edit</a>
+                        <br>
+                        {{ include('pack/_delete_form.html.twig') }}
+                        <!-- End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+<hr> 
+{%  include 'Footer.html.twig' %}

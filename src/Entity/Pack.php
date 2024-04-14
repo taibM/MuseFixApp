@@ -26,8 +26,8 @@ class Pack
     #[Assert\NotBlank(message:" le prix est  requis")] 
     #[Assert\GreaterThan(value: 0, message: "Le prix doit être supérieur à zéro.")]
     #[Assert\Positive(message:"Le prix doit être un nombre positif.")]
-    private ?float $prix = null;
-
+    private ?float $prix = null; 
+    
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "l'avantage est requis")]
     #[Assert\Regex(
