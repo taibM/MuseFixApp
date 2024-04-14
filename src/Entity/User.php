@@ -3,80 +3,65 @@
 namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use DateTime;
 
-/**
- * User
- *
- * @ORM\Table(name="user")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="userID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $userid;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=255, nullable=false)
-     */
-    private $nom;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Regex('/^[a-zA-Z]+$/')]
+    private ?string $nom = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=255, nullable=false)
-     */
-    private $prenom;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Regex('/^[a-zA-Z]+$/')]
+    private ?string $prenom = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=false)
-     */
-    private $email;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
+    private ?string $email = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="passwd", type="string", length=255, nullable=false)
-     */
-    private $passwd;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Regex('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/')]
+    private ?string $passwd = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="signUpDate", type="datetime", nullable=false)
-     */
-    private $signupdate;
+    #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank]
+    #[Assert\GreaterThanOrEqual("today")]
+    private ?DateTime $signupdate = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="role", type="integer", nullable=false)
-     */
-    private $role;
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
+    #[Assert\Type(type: 'integer')]
+    private ?int $role = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="adresse", type="string", length=255, nullable=false)
-     */
-    private $adresse;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    private ?string $adresse = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="tel", type="integer", nullable=false)
-     */
-    private $tel;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Regex('/^\d{8}$/')]
+    
+    public function __toString(): string
+    {
+        return $this->nom;
+    }
+
+
+
+    private ?string $tel = null;
 
     public function getUserid(): ?int
     {
@@ -136,7 +121,7 @@ class User
         return $this->signupdate;
     }
 
-    public function setSignupdate(\DateTimeInterface $signupdate): static
+    public function setSignupdate(\DateTime $signupdate): static
     {
         $this->signupdate = $signupdate;
 

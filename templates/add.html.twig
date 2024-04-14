@@ -14,16 +14,19 @@
             <td>{{ form_widget(AbonnementType.userID) }}</td>
             <td>{{ form_errors(AbonnementType.userID) }}</td>
         </tr>
+
         <tr>
             <td>{{ form_label(AbonnementType.idPack, "Entrez l'identifiant de votre pack :") }}</td>
             <td>{{ form_widget(AbonnementType.idPack) }}</td>
             <td>{{ form_errors(AbonnementType.idPack) }}</td>
         </tr>
+    
         <tr>
             <td>{{ form_label(AbonnementType.startDate, "Entrez votre date de début :") }}</td>
             <td>{{ form_widget(AbonnementType.startDate) }}</td>
             <td>{{ form_errors(AbonnementType.startDate) }}</td>
         </tr>
+
         <tr>
             <td>{{ form_label(AbonnementType.endDate, "Entrez votre date de fin :") }}</td>
             <td>{{ form_widget(AbonnementType.endDate) }}</td>

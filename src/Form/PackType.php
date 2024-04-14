@@ -12,7 +12,7 @@ class PackType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('typePack')
+            ->add('type_pack')
             ->add('prix')
             ->add('avantage')
         ;

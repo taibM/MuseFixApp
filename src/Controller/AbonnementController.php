@@ -3,13 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Abonnement;
-use App\Form\Abonnement1Type;
+use App\Form\AbonnementType;
 use App\Repository\AbonnementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Annotation\Route; 
 
 #[Route('/abonnement')]
 class AbonnementController extends AbstractController
@@ -17,6 +17,10 @@ class AbonnementController extends AbstractController
     #[Route('/', name: 'app_abonnement_index', methods: ['GET'])]
     public function index(AbonnementRepository $abonnementRepository): Response
     {
+// Récupérer tous les abonnements
+$abonnements = $abonnementRepository->findAll();
+
+
         return $this->render('abonnement/index.html.twig', [
             'abonnements' => $abonnementRepository->findAll(),
         ]);
@@ -26,7 +30,7 @@ class AbonnementController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $abonnement = new Abonnement();
-        $form = $this->createForm(Abonnement1Type::class, $abonnement);
+        $form = $this->createForm(AbonnementType::class, $abonnement);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,7 +57,7 @@ class AbonnementController extends AbstractController
     #[Route('/{idAbonnement}/edit', name: 'app_abonnement_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Abonnement $abonnement, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(Abonnement1Type::class, $abonnement);
+        $form = $this->createForm(AbonnementType::class, $abonnement);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

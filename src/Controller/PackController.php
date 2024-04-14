@@ -43,39 +43,58 @@ class PackController extends AbstractController
     }
 
     #[Route('/{idPack}', name: 'app_pack_show', methods: ['GET'])]
-    public function show(Pack $pack): Response
-    {
-        return $this->render('pack/show.html.twig', [
-            'pack' => $pack,
-        ]);
+public function show(int $idPack, PackRepository $packRepository): Response
+{
+    $pack = $packRepository->find($idPack);
+
+    if (!$pack) {
+        throw $this->createNotFoundException('Pack not found');
     }
 
-    #[Route('/{idPack}/edit', name: 'app_pack_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Pack $pack, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(PackType::class, $pack);
-        $form->handleRequest($request);
+    return $this->render('pack/show.html.twig', [
+        'pack' => $pack,
+    ]);
+}
+        
+#[Route('/{idPack}/edit', name: 'app_pack_edit', methods: ['GET', 'POST'])]
+public function edit(Request $request, int $idPack, PackRepository $packRepository, EntityManagerInterface $entityManager): Response
+{
+    $pack = $packRepository->find($idPack);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_pack_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('pack/edit.html.twig', [
-            'pack' => $pack,
-            'form' => $form,
-        ]);
+    if (!$pack) {
+        throw $this->createNotFoundException('Pack not found');
     }
 
-    #[Route('/{idPack}', name: 'app_pack_delete', methods: ['POST'])]
-    public function delete(Request $request, Pack $pack, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$pack->getIdPack(), $request->request->get('_token'))) {
-            $entityManager->remove($pack);
-            $entityManager->flush();
-        }
+    $form = $this->createForm(PackType::class, $pack);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->flush();
 
         return $this->redirectToRoute('app_pack_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('pack/edit.html.twig', [
+        'pack' => $pack,
+        'form' => $form,
+    ]);
+}
+
+
+#[Route('/{idPack}', name: 'app_pack_delete', methods: ['POST'])]
+public function delete(Request $request, int $idPack, PackRepository $packRepository, EntityManagerInterface $entityManager): Response
+{
+    $pack = $packRepository->find($idPack);
+
+    if (!$pack) {
+        throw $this->createNotFoundException('Pack not found');
+    }
+
+    if ($this->isCsrfTokenValid('delete'.$pack->getIdPack(), $request->request->get('_token'))) {
+        $entityManager->remove($pack);
+        $entityManager->flush();
+    }
+
+    return $this->redirectToRoute('app_pack_index', [], Response::HTTP_SEE_OTHER);
+}
 }

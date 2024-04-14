@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AbonnementRepository;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use DateTime;
 #[ORM\Entity(repositoryClass:AbonnementRepository::class)]
 class Abonnement
 {
@@ -14,16 +14,20 @@ class Abonnement
     #[ORM\Column]
     private ?int $idAbonnement = null;
 
-    #[ORM\Column(length: 150)]
-    private ?\DateTimeInterface $datedeb = null;
+    #[ORM\Column(type:'datetime')]
+    #[Assert\NotBlank(message:"la date de fin  est requis.")]
+    private ?DateTime  $datedeb = null;
 
-    #[ORM\Column(length: 150)]
-    private ?\DateTimeInterface $datefin = null;
-
+    #[ORM\Column(type:'datetime')]
+    #[Assert\NotBlank(message:"le  date de début  est requis.")]
+    private ?DateTime $datefin = null;
+   
     #[ORM\ManyToOne(inversedBy: 'abonnement')]
+    #[Assert\NotBlank(message:"le userId est requis.")]
     private ?User $userID = null;
 
     #[ORM\ManyToOne(inversedBy: 'abonnement')]
+    #[Assert\NotBlank(message:"l'id pack est requis.")]
     private ?Pack $idPack = null;
 
     public function getIdAbonnement(): ?int
@@ -31,23 +35,23 @@ class Abonnement
         return $this->idAbonnement;
     }
 
-    public function getDatedeb(): ?\DateTimeInterface
+    public function getDatedeb():?DateTime
     {
         return $this->datedeb;
     }
 
-    public function setDatedeb(\DateTimeInterface $datedeb): self
+    public function setDatedeb(DateTime  $datedeb): self
     {
         $this->datedeb = $datedeb;
         return $this;
     }
 
-    public function getDatefin(): ?\DateTimeInterface
+    public function getDatefin(): ?DateTime
     {
         return $this->datefin;
     }
 
-    public function setDatefin(\DateTimeInterface $datefin): self
+    public function setDatefin(DateTime $datefin): self
     {
         $this->datefin = $datefin;
         return $this;
