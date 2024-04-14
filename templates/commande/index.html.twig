@@ -1,45 +1,96 @@
-{% extends 'base.html.twig' %}
+{% include 'Navbar.html.twig' %}
 
-{% block title %}Commande index{% endblock %}
+{% block css %}
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/owl-carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tooplate-artxibition.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Panierindex.css') }}">
+{% endblock %}
+
 
 {% block body %}
-    <h1>Commande index</h1>
+    <h1 style="padding-left: 575px;padding-top: 20px">Vos Commandes</h1>
+<div style="padding-top: 40px" class="px-4 px-lg-0">
+<div class="pb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>OrderDate</th>
-                <th>Status</th>
-                <th>ModePaiement</th>
-                <th>AdresseLivraison</th>
-                <th>FraisLivraison</th>
-                <th>Total</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for commande in commandes %}
-            <tr>
-                <td>{{ commande.id }}</td>
-                <td>{{ commande.orderDate ? commande.orderDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ commande.status }}</td>
-                <td>{{ commande.modePaiement }}</td>
-                <td>{{ commande.adresseLivraison }}</td>
-                <td>{{ commande.fraisLivraison }}</td>
-                <td>{{ commande.total }}</td>
-                <td>
-                    <a href="{{ path('app_commande_show', {'id': commande.id}) }}">show</a>
-                    <a href="{{ path('app_commande_edit', {'id': commande.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                <!-- Shopping cart table -->
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="p-2 px-3 text-uppercase">IDCommande</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Date de Commande</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Status</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Mode de Paiement</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Adresse de Livraison</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Frais de Livraison</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Total</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Afficher</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Modifier</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Supprimer</div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-    <a href="{{ path('app_commande_new') }}">Create new</a>
+                        </td>
+
+                        {% for commande in commandes %}
+                            <tr>
+                                <td>{{ commande.id }}</td>
+                                <td>{{ commande.orderDate ? commande.orderDate|date('Y-m-d H:i:s') : '' }}</td>
+                                <td>{{ commande.status }}</td>
+                                <td>{{ commande.modePaiement }}</td>
+                                <td>{{ commande.adresseLivraison }}</td>
+                                <td>{{ commande.fraisLivraison }}</td>
+                                <td>{{ commande.total }}</td>
+                                <td><a href="{{ path('app_commande_show', {'id': commande.id}) }}">Afficher</a></td>
+                                <td><a href="{{ path('app_commande_edit', {'id': commande.id}) }}">Modifier</a>
+                                </td>
+                                <td>{{ include('commande/_delete_form.html.twig') }}</td>
+
+
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="{{ path('app_commande_new') }}">Ajouter une commande</a>
+
+                </div>
+                <!-- End -->
+            </div>
+        </div>
+
 {% endblock %}
+
+    </div>
+</div>
+{% include 'Footer.html.twig' %}

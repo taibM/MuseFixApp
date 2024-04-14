@@ -1,39 +1,93 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Panier index{% endblock %}
+{% include 'Navbar.html.twig' %}
+
+{% block css %}
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/owl-carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tooplate-artxibition.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Panierindex.css') }}">
+{% endblock %}
 
 {% block body %}
-    <h1>Panier index</h1>
+    <h1 style="padding-left: 650px;padding-top: 20px">Votre Panier</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Qte</th>
-                <th>PrixUnite</th>
-                <th>SousTotal</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for panier in paniers %}
-            <tr>
-                <td>{{ panier.id }}</td>
-                <td>{{ panier.qte }}</td>
-                <td>{{ panier.prixUnite }}</td>
-                <td>{{ panier.sousTotal }}</td>
-                <td>
-                    <a href="{{ path('app_panier_show', {'id': panier.id}) }}">show</a>
-                    <a href="{{ path('app_panier_edit', {'id': panier.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_panier_new') }}">Create new</a>
+    <div style="padding-top: 40px" class="px-4 px-lg-0">
+
+
+        <div class="pb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+
+                        <!-- Shopping cart table -->
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="p-2 px-3 text-uppercase">IDProduit</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Quantité</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">PrixUnité</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">SousTotal</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Afficher</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Modifier</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Supprimer</div>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                    </td>
+
+                                {% for panier in paniers %}
+                                    <tr>
+                                        <td>{{ panier.id }}</td>
+                                        <td>{{ panier.qte }}</td>
+                                        <td>{{ panier.prixUnite }}</td>
+                                        <td>{{ panier.sousTotal }}</td>
+                                        <td><a href="{{ path('app_panier_show', {'id': panier.id}) }}">Afficher</a></td>
+                                        <td><a href="{{ path('app_panier_edit', {'id': panier.id}) }}">Modifier</a>
+                                        </td>
+                                        <td>{{ include('panier/_delete_form.html.twig') }}</td>
+
+
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5">no records found</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <a href="{{ path('app_panier_new') }}">Ajouter au Panier</a>
+
+                        </div>
+                        <!-- End -->
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
+
+{% include 'Footer.html.twig' %}
