@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Commande;
 use App\Form\CommandeType;
 use App\Repository\CommandeRepository;
+use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,20 +29,24 @@ class CommandeController extends AbstractController
     {
         $commande = new Commande();
         $form = $this->createForm(CommandeType::class, $commande);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $commande->setOrderDate(new DateTime());
             $entityManager->persist($commande);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'La commande a été créée avec succès.');
+
+            return $this->redirectToRoute('app_commande_index');
         }
 
-        return $this->renderForm('commande/new.html.twig', [
-            'commande' => $commande,
-            'form' => $form,
+        return $this->render('commande/new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
+
 
     #[Route('/{id}', name: 'app_commande_show', methods: ['GET'])]
     public function show(Commande $commande): Response

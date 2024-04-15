@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Panier;
+use App\Entity\Produit;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -19,8 +20,14 @@ class PanierType extends AbstractType
             ->add('qte')
             ->add('prixUnite')
             ->add('sousTotal')
-            ->add('userID')
-            ->add('idProduit')
+            ->add('userID', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'id',
+            ])
+            ->add('idProduit',EntityType::class, [
+                'class' => Produit::class,
+                'choice_label' => 'id'
+            ])
         ;
     }
 

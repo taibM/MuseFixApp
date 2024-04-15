@@ -6,6 +6,7 @@ use App\Entity\Panier;
 use App\Entity\User;
 use App\Form\PanierType;
 use App\Repository\PanierRepository;
+use App\Repository\ProduitRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,27 +25,24 @@ class PanierController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_panier_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $repuser ): Response
+    #[Route('/panier/new', name: 'app_panier_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, UserRepository $repuser, ProduitRepository $repproduit): Response
     {
         $panier = new Panier();
-
 
         $form = $this->createForm(PanierType::class, $panier);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser(); // Obtenez l'utilisateur actuellement authentifié
-            $panier->setUserid($user); // Assurez-vous de définir la propriété userid avec l'utilisateur
             $entityManager->persist($panier);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_panier_index');
         }
 
-        return $this->renderForm('panier/new.html.twig', [
+        return $this->render('panier/new.html.twig', [
             'panier' => $panier,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -57,19 +55,27 @@ class PanierController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_panier_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Panier $panier, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, EntityManagerInterface $entityManager, ProduitRepository $repproduit, PanierRepository $panierRepository, $id): Response
     {
+        $panier = $panierRepository->find($id);
         $form = $this->createForm(PanierType::class, $panier);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser(); // Obtenez l'utilisateur actuellement authentifié
 
-            $panier->setUserid($user); // Assurez-vous de définir la propriété userid avec l'utilisateur
+            $panierData = $form->getData();
 
+
+            $panier->setQte($panierData->getQte());
+            $panier->setPrixUnite($panierData->getPrixUnite());
+            $panier->setSousTotal($panierData->getSousTotal());
+
+
+            $entityManager->persist($panier);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
+
+            return $this->redirectToRoute('app_panier_index');
         }
 
         return $this->renderForm('panier/edit.html.twig', [

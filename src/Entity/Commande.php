@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CommandeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
@@ -24,9 +25,11 @@ class Commande
     private ?string $modePaiement = null;
 
     #[ORM\Column(name: 'adresseLivraison', type: "string", length: 255)]
+    #[Assert\NotBlank(message:"la date de fin  est requis.")]
     private ?string $adresseLivraison = null;
 
     #[ORM\Column(name: 'fraisLivraison', type: "float")]
+    #[Assert\Positive(message:"Le prix doit être un nombre positif.")]
     private ?float $fraisLivraison = null;
 
     #[ORM\Column(name: 'total', type: "float")]

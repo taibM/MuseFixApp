@@ -7,6 +7,7 @@ use App\Repository\PanierRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Integer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PanierRepository::class)]
 class Panier
@@ -17,6 +18,8 @@ class Panier
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThan(value: 0, message: "La quantité doit être supérieur à zéro.")]
+    #[Assert\Positive(message:"Le prix doit être un nombre positif.")]
     private ?int $qte = null;
 
 

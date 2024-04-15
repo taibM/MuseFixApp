@@ -27,7 +27,7 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $passwd = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $signUpDate = null;
 
     #[ORM\Column]

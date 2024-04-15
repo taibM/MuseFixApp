@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Commande;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,7 +20,10 @@ class CommandeType extends AbstractType
             ->add('adresseLivraison')
             ->add('fraisLivraison')
             ->add('total')
-            ->add('userid')
+            ->add('userID', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'id',
+            ])
         ;
     }
 
