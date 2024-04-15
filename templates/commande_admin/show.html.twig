@@ -1,0 +1,60 @@
+{% include 'Navbaradmin.html.twig' %}
+
+    {% block css %}
+        <link rel="stylesheet" href="{{ asset('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600') }}">
+        <link rel="stylesheet" href="{{ asset('css2/fontawesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/fullcalendar.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/tooplate.css') }}">
+    {% endblock %}
+
+
+{% block body %}
+    <h1 style="padding-left: 650px;padding-top: 20px;color: white">Commande</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th style="color: white">Id</th>
+            <td>{{ commande.id }}</td>
+        </tr>
+        <tr>
+            <th style="color: white">OrderDate</th>
+            <td>{{ commande.orderDate ? commande.orderDate|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th style="color: white">Status</th>
+            <td>{{ commande.status }}</td>
+        </tr>
+        <tr>
+            <th style="color: white">ModePaiement</th>
+            <td>{{ commande.modePaiement }}</td>
+        </tr>
+        <tr>
+            <th style="color: white">AdresseLivraison</th>
+            <td>{{ commande.adresseLivraison }}</td>
+        </tr>
+        <tr>
+            <th style="color: white">FraisLivraison</th>
+            <td>{{ commande.fraisLivraison }}</td>
+        </tr>
+        <tr>
+            <th style="color: white">Total</th>
+            <td>{{ commande.total }}</td>
+        </tr>
+        <tr>
+            <th style="color: white">Retour</th>
+            <td><a href="{{ path('app_admin_commande_index') }}" style="color: white">Retour à la liste</a></td>
+        </tr>
+        <tr>
+            <th style="color: white">Modifier</th>
+            <td><a href="{{ path('app_admin_commande_edit', {'id': commande.id}) }}" style="color: white">Modifier</a></td>
+        </tr>
+        <tr>
+            <th style="color: white">Supprimer</th>
+            <td> {{ include('commande_admin/_delete_form.html.twig') }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

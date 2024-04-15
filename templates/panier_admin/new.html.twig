@@ -1,0 +1,26 @@
+
+{% include 'Navbaradmin.html.twig' %}
+
+    {% block css %}
+        <link rel="stylesheet" href="{{ asset('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600') }}">
+        <link rel="stylesheet" href="{{ asset('css2/fontawesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/fullcalendar.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/tooplate.css') }}">
+    {% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 style="text-align: center;padding-top: 30px;color: white">Ajouter au Panier</h1>
+
+                {{ include('panier_admin/_form.html.twig') }}
+
+                <a href="{{ path('app_admin_panier_index') }}" style="display: block; text-align: center; margin-top: 20px;color: white">Retourner à la liste</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

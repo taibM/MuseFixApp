@@ -1,31 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    {% block head %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    {% block title %}<title>Dashboard Admin Template by Tooplate.com</title> {% endblock %}
-    <!--
-
-    Template 2108 Dashboard
-
-	http://www.tooplate.com/view/2108-dashboard
-
-    -->
-    {% block css %}
-    <link rel="stylesheet" href="{{ asset('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600') }}">
-    <link rel="stylesheet" href="{{ asset('css2/fontawesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css2/fullcalendar.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css2/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css2/tooplate.css') }}">
-    {% endblock %}
-    {% endblock %}
-</head>
-
-<body id="reportsPage">
-{% block body %}
 <div class="" id="home">
     <div class="container">
         <div class="row">
@@ -63,7 +35,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_admin_commande_index') }}">Commande</a>
+                                <a class="nav-link" href="{{ path('app_admin_panier_index') }}">Commande</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -91,21 +63,3 @@
         </div>
     </div>
 </div>
-{% block js %}
-<script src="{{ asset('js2/jquery-3.3.1.min.js') }}"></script>
-<!-- https://jquery.com/download/ -->
-<script src="{{ asset('js2/moment.min.js') }}"></script>
-<!-- https://momentjs.com/ -->
-<script src="{{ asset('js2/utils.js') }}"></script>
-<script src="{{ asset('js2/Chart.min.js') }}"></script>
-<!-- http://www.chartjs.org/docs/latest/ -->
-<script src="{{ asset('js2/fullcalendar.min.js') }}"></script>
-<!-- https://fullcalendar.io/ -->
-<script src="{{ asset('js2/bootstrap.min.js') }}"></script>
-<!-- https://getbootstrap.com/ -->
-<script src="{{ asset('js2/tooplate-scripts.js') }}"></script>
-<script> {% endblock %}
-</script>
-{% endblock %}
-</body>
-</html>
