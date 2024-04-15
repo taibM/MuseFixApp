@@ -25,14 +25,22 @@ class Commande
     private ?string $modePaiement = null;
 
     #[ORM\Column(name: 'adresseLivraison', type: "string", length: 255)]
-    #[Assert\NotBlank(message:"la date de fin  est requis.")]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9\s\-,\.\']+$/u',
+        message: "L'adresse de livraison ne peut contenir que des lettres, des chiffres, des espaces et les caractères '-', ',', '.' et '''."
+    )]
+    #[Assert\NotBlank(message:"l'adresse de Livraison est requise.")]
     private ?string $adresseLivraison = null;
 
     #[ORM\Column(name: 'fraisLivraison', type: "float")]
-    #[Assert\Positive(message:"Le prix doit être un nombre positif.")]
+    #[Assert\GreaterThanOrEqual(
+        value: 0,
+        message: "Les frais de livraison doivent être supérieurs ou égaux à zéro."
+    )]
     private ?float $fraisLivraison = null;
 
     #[ORM\Column(name: 'total', type: "float")]
+    #[Assert\Positive(message:"Le total doit être un nombre positif.")]
     private ?float $total = null;
 
     #[ORM\ManyToOne(inversedBy: "commandes")]

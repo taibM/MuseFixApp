@@ -18,15 +18,19 @@ class Panier
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Assert\GreaterThan(value: 0, message: "La quantité doit être supérieur à zéro.")]
-    #[Assert\Positive(message:"Le prix doit être un nombre positif.")]
+    #[Assert\NotBlank(message:"la quantité est requise.")]
+    #[Assert\Positive(message:"La quantité doit être un nombre positif.")]
     private ?int $qte = null;
 
 
     #[ORM\Column(name: "prixUnite")]
+    #[Assert\NotBlank(message:"le prix unitaire est requis.")]
+    #[Assert\Positive(message:"Le prix unitaire doit être un nombre positif.")]
     private ?float $prixUnite = null;
 
     #[ORM\Column(name: "sousTotal")]
+    #[Assert\NotBlank(message:"le sous-total est requis.")]
+    #[Assert\Positive(message:"Le sous-total doit être un nombre positif.")]
     private ?float $sousTotal = null;
 
 
