@@ -1,11 +1,26 @@
-{% extends 'base.html.twig' %}
+{% include 'Navbar.html.twig' %}
 
-{% block title %}New Panier{% endblock %}
+{% block css %}
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/owl-carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tooplate-artxibition.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Panierindex.css') }}">
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Panier</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 style="text-align: center;padding-top: 30px;">Ajouter au Panier</h1>
 
-    {{ include('panier/_form.html.twig') }}
+                {{ include('panier/_form.html.twig') }}
 
-    <a href="{{ path('app_panier_index') }}">back to list</a>
+                <a href="{{ path('app_panier_index') }}" style="display: block; text-align: center; margin-top: 20px;">Retourner à la liste</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
+{% include 'Footer.html.twig' %}

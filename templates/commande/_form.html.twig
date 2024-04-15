@@ -1,4 +1,23 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+
+<link rel="stylesheet" href="{{ asset('css/form.css') }}">
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="my-form-container">
+                {{ form_start(form, {'attr': {'class': 'my-form-class'}}) }}
+
+                <div class="my-form-row" >
+                    {{ form_widget(form) }}
+                </div>
+                <div class="my-form-row">
+                    <button class="btn btn-dark">{{ button_label|default('Ajouter') }}</button>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
