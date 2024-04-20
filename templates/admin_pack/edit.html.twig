@@ -1,0 +1,38 @@
+{% include 'base2.html.twig' %}
+
+{% block css %}
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/owl-carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tooplate-artxibition.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/packedit.css') }}"> <!-- Updated CSS file name -->
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 style="text-align: center;">Edit Pack : </h1>
+                    </div>
+
+                    <div class="card-body">
+                        {{ include('pack/_form.html.twig', {'button_label': 'Update'}) }} <!-- Updated path to the form template -->
+                    </div>
+
+                    <div class="card-footer">
+                        <a href="{{ path('app_admin_pack_index') }}" class="back-btn">back to list</a> <!-- Updated route name -->
+                        <br> 
+                        {{ include('pack/_delete_form.html.twig') }}
+                    </div>
+
+                    <!-- Empty space below content -->
+                    <div class="extra-space"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

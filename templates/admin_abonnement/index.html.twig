@@ -1,18 +1,16 @@
 
-{%  include 'Navbar.html.twig' %} 
-
+{% include 'base2.html.twig' %}
 
     {% block css %}
-        <!-- Additional CSS Files -->
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/owl-carousel.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/tooplate-artxibition.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/abonnementindex.css') }}">
+        <link rel="stylesheet" href="{{ asset('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600') }}">
+        <link rel="stylesheet" href="{{ asset('css2/fontawesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/fullcalendar.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/tooplate.css') }}">
     {% endblock %}
 
 {% block body %}
-    <h1 style="padding-left: 650px;padding-top: 20px">Vos  Abonnements : </h1> 
+    <h1 style="text-align: center; padding-top: 20px; color: white; font-family: 'Open Sans', sans-serif; font-weight: bold; text-shadow: 2px 2px 4px #888888; margin-bottom: 40px;">Liste des Abonnements</h1>
 
 
     <div style="padding-top: 40px" class="px-4 px-lg-0">
@@ -66,9 +64,9 @@
                                             <td>{{ abonnement.datedeb|date('Y-m-d H:i:s') }}</td>
                                             <td>{{ abonnement.datefin|date('Y-m-d H:i:s') }}</td>
                                 
-                                        <td><a href="{{ path('app_abonnement_show', {'idAbonnement': abonnement.idAbonnement}) }}">Afficher</a></td>
-                                        <td><a href="{{ path('app_abonnement_edit', {'idAbonnement': abonnement.idAbonnement}) }}">Modifier</a>
-                                        <td>{{ include('abonnement/_delete_form.html.twig') }}</td>
+                                        <td><a href="{{ path('app_admin_abonnement_show', {'idAbonnement': abonnement.idAbonnement}) }}">Afficher</a></td>
+                                        <td><a href="{{ path('app_admin_abonnement_edit', {'idAbonnement': abonnement.idAbonnement}) }}">Modifier</a></td>
+                                        <td>{{ include('admin_abonnement/_delete_form.html.twig') }}</td>
 
 
                                     </tr>
@@ -79,7 +77,7 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
-                            <a href="{{ path('app_abonnement_new') }}">Ajouter abonnement</a>
+                            <a href="{{ path('app_admin_abonnement_new') }}">Ajouter abonnement</a>
 
                         </div>
                         <!-- End -->
@@ -92,5 +90,4 @@
         </div>
 {% endblock %} 
 <hr>
-{%  include 'Footer.html.twig' %} 
 

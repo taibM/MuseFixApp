@@ -1,0 +1,61 @@
+{% include 'base2.html.twig' %}
+
+{% block css %}
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css2/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css2/font-awesome.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css2/owl-carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('css2/tooplate-artxibition.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/packindex.css') }}"> <!-- Updated CSS file name -->
+{% endblock %}
+
+{% block body %}
+    <h1 style="padding-left: 650px; padding-top: 20px; color: white; font-weight: bold; text-shadow: 2px 2px 4px #000000;">Vos Packs:</h1>
+
+    <div style="padding-top: 40px" class="px-4 px-lg-0">
+        <div class="pb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+                        <!-- Pack table -->
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="border-0 bg-light"><div class="p-2 px-3 text-uppercase">IdPack</div></th>
+                                        <th scope="col" class="border-0 bg-light"><div class="py-2 text-uppercase">TypePack</div></th>
+                                        <th scope="col" class="border-0 bg-light"><div class="py-2 text-uppercase">Prix</div></th>
+                                        <th scope="col" class="border-0 bg-light"><div class="py-2 text-uppercase">Avantages</div></th>
+                                        <th scope="col" class="border-0 bg-light"><div class="py-2 text-uppercase">Actions</div></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pack in packs %}
+                                        <tr>
+                                            <td>{{ pack.id }}</td>
+                                            <td>{{ pack.typePack }}</td>
+                                            <td>{{ pack.prix }}</td>
+                                            <td>{{ pack.avantage }}</td>
+                                            <td>
+                                                <a href="{{ path('app_admin_pack_show', {'idPack': pack.id}) }}">Afficher</a> <!-- Updated route name -->
+                                                <a href="{{ path('app_admin_pack_edit', {'idPack': pack.id}) }}">Modifier</a> <!-- Updated route name -->
+                                                {{ include('pack/_delete_form.html.twig') }}
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="5">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <a href="{{ path('app_admin_pack_new') }}">Ajouter Pack</a> <!-- Updated route name -->
+                        </div>
+                        <!-- End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

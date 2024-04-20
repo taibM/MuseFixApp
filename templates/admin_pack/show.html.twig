@@ -1,0 +1,56 @@
+{% include 'base2.html.twig' %}
+
+{% block css %}
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/owl-carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tooplate-artxibition.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/packshow.css') }}"> <!-- Updated CSS file name -->
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 style="text-align: center;">Show Pack Details</h1> <!-- Updated title -->
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>IdPack : </th>
+                                    <td>{{ pack.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>TypePack :</th>
+                                    <td>{{ pack.typePack }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Prix :</th>
+                                    <td>{{ pack.prix }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Avantages :</th>
+                                    <td>{{ pack.avantage }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card-footer">
+                        <a href="{{ path('app_admin_pack_index') }}" class="back-btn">Back to List</a> <!-- Updated route name -->
+                    </div>
+
+                    <!-- Empty space below content -->
+                    <div class="extra-space"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

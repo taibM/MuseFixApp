@@ -15,4 +15,11 @@ class DefaultController extends AbstractController
             'controller_name' => 'DefaultController',
         ]);
     }
+    #[Route('/admin', name: 'app_admin')]
+    public function admin(): Response
+    {
+        return $this->render('base2.html.twig', [
+            'controller_name' => 'DefaultController',
+        ]);
+    }
 }

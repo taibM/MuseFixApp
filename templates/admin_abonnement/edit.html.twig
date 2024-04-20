@@ -1,0 +1,37 @@
+{% include 'base2.html.twig' %}
+
+    {% block css %}
+        <link rel="stylesheet" href="{{ asset('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600') }}">
+        <link rel="stylesheet" href="{{ asset('css2/fontawesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/fullcalendar.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/tooplate.css') }}">
+    {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 style="text-align: center;">Edit Your Subscription:</h1>
+                    </div>
+
+                    <div class="card-body">
+                        {{ include('admin_abonnement/_form.html.twig', {'button_label': 'Update'}) }}
+                    </div>
+
+                    <div class="card-footer">
+                        <a href="{{ path('app_admin_abonnement_index') }}" class="back-btn">back to list</a>
+                        <br> 
+                        {{ include('admin_abonnement/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+<hr>
+
+

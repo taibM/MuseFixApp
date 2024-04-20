@@ -1,0 +1,105 @@
+{% include 'base2.html.twig' %}
+
+    {% block css %}
+        <link rel="stylesheet" href="{{ asset('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600') }}">
+        <link rel="stylesheet" href="{{ asset('css2/fontawesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/fullcalendar.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css2/tooplate.css') }}">
+    {% endblock %}
+
+
+    {% block body %}
+        <h1>Abonnement</h1>
+    
+        <style>
+            .table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 30px;
+                font-size: 16px;
+                background-color: white; /* Set table background to white */
+            }
+    
+            .table th, .table td {
+                padding: 12px 15px;
+                border-bottom: 1px solid #ddd;
+                text-align: left;
+                color: #333; /* Set text color to dark */
+            }
+    
+            .table th {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+    
+            .table tr:hover {
+                background-color: #f2f2f2; /* Hover color same as even row color */
+            }
+            .btn {
+                display: inline-block;
+                padding: 10px 20px;
+                margin: 10px 5px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                text-align: center;
+                transition: background-color 0.3s ease;
+            }
+    
+            .back-btn {
+                background-color: #007BFF;
+                color: white;
+            }
+    
+            .edit-btn {
+                background-color: #28a745;
+                color: white;
+            }
+    
+            .delete-btn {
+                background-color: #dc3545;
+                color: white;
+            }
+    
+            .btn:hover {
+                opacity: 0.8;
+            }
+        </style>
+    
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>IdAbonnement</th>
+                    <td>{{ abonnement.idAbonnement }}</td>
+                </tr>
+                <tr>
+                    <th>Iduser</th>
+                    <td>{{ abonnement.userID }}</td>
+                </tr>
+                <tr>
+                    <th>Idpack</th>
+                    <td>{{ abonnement.IdPack }}</td>
+                </tr>
+                <tr>
+                    <th>Datedeb</th>
+                    <td>{{ abonnement.datedeb|date('Y-m-d H:i:s') }}</td>
+                </tr>
+                <tr>
+                    <th>Datefin</th>
+                    <td>{{ abonnement.datefin|date('Y-m-d H:i:s') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    
+        <div style="text-align: center;">
+            <a href="{{ path('app_admin_abonnement_index') }}" class="btn back-btn">Back to List</a>
+            <a href="{{ path('app_abonnement_edit', {'idAbonnement': abonnement.idAbonnement}) }}" class="btn edit-btn">Edit</a>
+        </div>
+    
+    
+        {{ include('admin_abonnement/_delete_form.html.twig') }}
+    {% endblock %}
+    
+
