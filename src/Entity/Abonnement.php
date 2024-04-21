@@ -5,7 +5,10 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AbonnementRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 use DateTime;
+#[Assert\Callback('validateDates')]
 #[ORM\Entity(repositoryClass:AbonnementRepository::class)]
 class Abonnement
 {
@@ -78,4 +81,15 @@ class Abonnement
         $this->idPack = $idPack;
         return $this;
     }
+    
+   
+    public function validateDates(ExecutionContextInterface $context)
+    {
+        if ($this->datedeb >= $this->datefin) {
+            $context->buildViolation('La date de début doit être inférieure à la date de fin.')
+                ->atPath('datedeb')
+                ->addViolation();
+        }
+    }
+
 }
