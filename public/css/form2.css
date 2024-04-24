@@ -1,0 +1,21 @@
+a {color: white}
+.my-form-container {
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.my-form-row {
+    margin-bottom: 20px;
+}
+button {
+    color: black;
+}
+.my-form-container input[type="text"],
+.my-form-container input[type="password"],
+.my-form-container input[type="email"],
+.my-form-container select,
+.my-form-container textarea,
+.my-form-container label,
+.my-form-container button {
+    color: white; /* Change la couleur du texte en blanc */
+}

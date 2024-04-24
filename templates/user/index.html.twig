@@ -1,8 +1,70 @@
-{% extends 'base.html.twig' %}
+{% include 'Navbar.html.twig' %}
 
 {% block title %}User index{% endblock %}
 
+{% block css %}
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/owl-carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tooplate-artxibition.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Panierindex.css') }}">
+{% endblock %}
+
+
 {% block body %}
+    <h1 style="padding-left: 575px;padding-top: 20px">Utilisateurs</h1>
+<div style="padding-top: 40px" class="px-4 px-lg-0">
+<div class="pb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+
+                <!-- Shopping cart table -->
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="p-2 px-3 text-uppercase">UserID</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Nom</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Prenom</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase"> Email</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Password</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Signup Date</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Role</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                                            <div class="py-2 text-uppercase">Adresse</div>
+                                                        </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Afficher</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Modifier</div>
+                            </th>
+                            <th scope="col" class="border-0 bg-light">
+                                <div class="py-2 text-uppercase">Supprimer</div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </td>
+
+
     <h1>User index</h1>
 
     <table class="table">
@@ -33,8 +95,8 @@
                 <td>{{ user.adresse }}</td>
                 <td>{{ user.tel }}</td>
                 <td>
-                    <a href="{{ path('app_user_show', {'userid': user.userid}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'userid': user.userid}) }}">edit</a>
+                    <a href="{{ path('app_admin_user_show', {'userid': user.userid}) }}">show</a>
+                    <a href="{{ path('app_admin_user_edit', {'userid': user.userid}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -46,4 +108,9 @@
     </table>
 
     <a href="{{ path('app_user_new') }}">Create new</a>
+
 {% endblock %}
+</div>
+</div>
+
+{% include 'Footer.html.twig' %}
