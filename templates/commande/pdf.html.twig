@@ -1,0 +1,33 @@
+</head>
+<body>
+<h1>Liste des Commandes</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Date de Commande</th>
+        <th>Status</th>
+        <th>Mode de Paiement</th>
+        <th>Adresse de Livraison</th>
+        <th>Frais de Livraison</th>
+        <th>Total</th>
+        <th>ID Utilisateur</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for commande in commandes %}
+        <tr>
+            <td>{{ commande.id }}</td>
+            <td>{{ commande.orderDate|date('Y-m-d H:i:s') }}</td>
+            <td>{{ commande.status }}</td>
+            <td>{{ commande.modePaiement }}</td>
+            <td>{{ commande.adresseLivraison }}</td>
+            <td>{{ commande.fraisLivraison }}</td>
+            <td>{{ commande.total }}</td>
+            <td>{{ commande.userid.id }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

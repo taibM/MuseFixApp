@@ -79,13 +79,25 @@ class CommandeController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/update-frais-livraison', name: 'app_commande_update_frais_livraison', methods: ['POST'])]
+    public function updateFraisLivraison(Request $request, Commande $commande, EntityManagerInterface $entityManager): Response
+    {
+        $data = json_decode($request->getContent(), true);
+
+        // Mettre à jour les frais de livraison de la commande
+        $commande->setFraisLivraison($data['fraisLivraison']);
+
+        $entityManager->flush();
+
+        return new Response(null, Response::HTTP_OK);
+    }
     #[Route('/{id}/update-total', name: 'app_commande_update_total', methods: ['POST'])]
     public function updateTotal(Request $request, Commande $commande, EntityManagerInterface $entityManager): Response
     {
         $data = json_decode($request->getContent(), true);
 
-        if (isset($data['nouveauTotal'])) {
-            $nouveauTotal = $data['nouveauTotal'];
+        if (isset($data['total'])) {
+            $nouveauTotal = $data['total'];
 
             // Mettre à jour le total de la commande
             $commande->setTotal($nouveauTotal);
@@ -97,6 +109,7 @@ class CommandeController extends AbstractController
 
         return new JsonResponse(['message' => 'Erreur lors de la mise à jour du total'], Response::HTTP_BAD_REQUEST);
     }
+
 
     #[Route('/{id}/delete', name: 'app_commande_delete', methods: ['POST'])]
     public function delete(Request $request, Commande $commande, EntityManagerInterface $entityManager): Response
@@ -126,5 +139,17 @@ class CommandeController extends AbstractController
             // Gérer les erreurs
             return $this->json(['error' => $e->getMessage()], 500);
         }
+    }
+    #[Route('/search', name: 'app_commande_search', methods: ['POST'])]
+    public function search(Request $request, CommandeRepository $commandeRepository): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $query = $data['query'];
+
+        // Exécutez une requête dans votre repository pour récupérer les commandes filtrées par adresse de livraison
+        $commandesFiltrees = $commandeRepository->searchByAddress($query);
+
+        // Retournez les résultats de la recherche en tant que réponse JSON
+        return $this->json($commandesFiltrees);
     }
 }

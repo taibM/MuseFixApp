@@ -74,8 +74,6 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
-                            <button id="checkout-button">Payer maintenant</button>
-
                             <div>Total complet : <span id="total-complet"></span></div>
                             <a href="{{ path('app_commande_new') }}">Ajouter une commande</a>
                         </div>
@@ -84,6 +82,12 @@
             </div>
         </div>
     </div>
+    <a href="{{ path('app_download1_pdf') }}" class="btn btn-black">
+        Télécharger PDF
+    </a>
+    <a href="{{ path('app_commande_export_excel1') }}" class="btn btn-black">
+        Télécharger Excel
+    </a>
 {% endblock %}
 
 {% block javascripts %}
@@ -175,7 +179,66 @@
                 });
             });
         });
+        document.addEventListener('DOMContentLoaded', function() {
+            var fraisLivraisonInputs = document.querySelectorAll('.frais-livraison-input');
 
+            fraisLivraisonInputs.forEach(function(input) {
+                input.addEventListener('change', function() {
+                    var tr = input.closest('tr');
+                    var fraisLivraison = parseFloat(input.value);
+                    var ancienFraisLivraison = parseFloat(input.getAttribute('data-ancien')); // Récupérer les anciens frais de livraison
+                    var totalInitial = parseFloat(tr.querySelector('.total-initial').innerText); // Total initial
+                    var differenceLivraison = fraisLivraison - ancienFraisLivraison; // Calculer la différence de frais de livraison
+                    var nouveauTotal = totalInitial + differenceLivraison; // Mettre à jour le total
+                    var commandeId = tr.querySelector('td:first-child').innerText;
+
+                    tr.querySelector('.total').innerText = nouveauTotal.toFixed(2);
+
+                    fetch('/commande/' + commandeId + '/update-frais-livraison', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ fraisLivraison: fraisLivraison })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erreur lors de la mise à jour des frais de livraison');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Mettre à jour le total complet
+                            updateTotalComplet();
+                        })
+                        .catch(error => {
+                            console.error('Erreur:', error);
+                        });
+                });
+            });
+
+            var totalCompletElement = document.getElementById('total-complet');
+
+            // Fonction pour mettre à jour le total complet
+            function updateTotalComplet() {
+                var totalComplet = 0;
+                var totalElements = document.querySelectorAll('.total');
+
+                totalElements.forEach(function(element) {
+                    totalComplet += parseFloat(element.innerText);
+                });
+
+                if (totalCompletElement) {
+                    totalCompletElement.innerText = totalComplet.toFixed(2);
+                }
+            }
+
+            // Mettre à jour le total complet au chargement de la page
+            updateTotalComplet();
+        });
+    </script>
+    <script>
         var stripe = Stripe('{{ 'pk_test_51OrLeRLwWiZBvlVZ55Z0El9zPOSWuaguBfY6C5evqU690kCisEzfWQoLyv3eMSnHBqYvtdL9Yli3f8IhEdZfTKdW00Niuy22M8' }}'); // Remplacez par votre clé publique Stripe
         var checkoutButton = document.getElementById('checkout-button');
 
@@ -227,5 +290,49 @@
                 });
             });
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchButton = document.getElementById('search-button');
+
+            searchButton.addEventListener('click', function() {
+                var searchInput = document.getElementById('search-input').value;
+
+                // Effectuez une requête AJAX pour récupérer les commandes filtrées par adresse de livraison
+                fetch('/commande/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({ query: searchInput })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Mettez à jour la table avec les résultats de la recherche
+                        var tableBody = document.querySelector('.table tbody');
+                        tableBody.innerHTML = ''; // Effacez le contenu actuel de la table
+
+                        data.forEach(function(commande) {
+                            var row = document.createElement('tr');
+                            row.innerHTML = `
+                    <td>${commande.id}</td>
+                    <td>${commande.orderDate ? commande.orderDate : ''}</td>
+                    <td>${commande.status}</td>
+                    <td>${commande.modePaiement}</td>
+                    <td>${commande.adresseLivraison}</td>
+                    <td><input type="number" id="fraisLivraison_${commande.id}" class="frais-livraison-input" value="${commande.fraisLivraison}" data-ancien="${commande.fraisLivraison}"></td>
+                    <td><span class="total">${commande.total}</span></td>
+                    <td><a href="/commande/${commande.id}">Afficher</a></td>
+                    <td><a href="/commande/${commande.id}/edit">Modifier</a></td>
+                    <td>${commande.deleteForm}</td>
+                `;
+                            tableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => console.error('Erreur:', error));
+            });
+        });
+
     </script>
 {% endblock %}
