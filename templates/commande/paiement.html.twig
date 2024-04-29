@@ -1,0 +1,19 @@
+{# templates/commande/paiement.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement{% endblock %}
+
+{% block body %}
+    <h1>Paiement de la commande</h1>
+    <form action="{{ path('app_commande_paiement') }}" method="post">
+        <!-- Champ pour le token Stripe -->
+        <input type="hidden" name="stripeToken" id="stripeToken" value="" />
+
+        <!-- Autres champs de formulaire pour collecter les informations de paiement, par exemple le montant, le nom, le numéro de carte, etc. -->
+        <!-- Assurez-vous d'ajouter les attributs nécessaires, tels que le nom, le type et les champs obligatoires -->
+
+        <!-- Bouton de soumission du formulaire -->
+        <button type="submit">Payer</button>
+    </form>
+{% endblock %}
