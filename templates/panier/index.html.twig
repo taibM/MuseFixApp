@@ -1,5 +1,5 @@
-
 {% include 'Navbar.html.twig' %}
+
 
 {% block css %}
     <!-- Additional CSS Files -->
@@ -13,30 +13,33 @@
 {% block body %}
     <h1 style="padding-left: 650px;padding-top: 20px">Votre Panier</h1>
 
-
     <div style="padding-top: 40px" class="px-4 px-lg-0">
-
-
         <div class="pb-5">
             <div class="container">
+                <form id="filter-form" action="{{ path('app_panier_index') }}" method="GET">
+                    <label for="quantiteFiltre">Quantité supérieure à :</label>
+                    <input type="number" id="quantiteFiltre" name="quantiteFiltre" value="{{ app.request.query.get('quantiteFiltre', '') }}">
+                    <label for="sousTotalFiltre">Sous-total supérieur à :</label>
+                    <input type="number" id="sousTotalFiltre" name="sousTotalFiltre" value="{{ app.request.query.get('sousTotalFiltre', '') }}">
+                    <button type="submit">Filtrer</button>
+                </form>
                 <div class="row">
                     <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
-
                         <!-- Shopping cart table -->
-                        <div class="table-responsive">
-                            <table class="table">
+                        <div id="panier-container" class="table-responsive">
+                            <table id="panier-table" class="table">
                                 <thead>
                                 <tr>
-                                    <th scope="col" class="border-0 bg-light">
+                                    <th scope="col" class="border-0 bg-light" data-sort="id">
                                         <div class="p-2 px-3 text-uppercase">IDProduit</div>
                                     </th>
-                                    <th scope="col" class="border-0 bg-light">
+                                    <th scope="col" class="border-0 bg-light" data-sort="quantite">
                                         <div class="py-2 text-uppercase">Quantité</div>
                                     </th>
-                                    <th scope="col" class="border-0 bg-light">
+                                    <th scope="col" class="border-0 bg-light" data-sort="prixUnitaire">
                                         <div class="py-2 text-uppercase">PrixUnité</div>
                                     </th>
-                                    <th scope="col" class="border-0 bg-light">
+                                    <th scope="col" class="border-0 bg-light" data-sort="sousTotal">
                                         <div class="py-2 text-uppercase">SousTotal</div>
                                     </th>
                                     <th scope="col" class="border-0 bg-light">
@@ -48,24 +51,23 @@
                                     <th scope="col" class="border-0 bg-light">
                                         <div class="py-2 text-uppercase">Supprimer</div>
                                     </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Image</div>
+                                    </th>
                                 </tr>
                                 </thead>
+
                                 <tbody>
-
-                                    </td>
-
                                 {% for panier in paniers %}
                                     <tr>
                                         <td>{{ panier.id }}</td>
-                                        <td>{{ panier.qte }}</td>
+                                        <td><input type="number" id="quantite_{{ panier.id }}" class="quantite-input" value="{{ panier.qte }}"></td>
                                         <td>{{ panier.prixUnite }}</td>
-                                        <td>{{ panier.sousTotal }}</td>
+                                        <td class="sousTotal">{{ panier.sousTotal }}</td>
                                         <td><a href="{{ path('app_panier_show', {'id': panier.id}) }}">Afficher</a></td>
-                                        <td><a href="{{ path('app_panier_edit', {'id': panier.id}) }}">Modifier</a>
-                                        </td>
+                                        <td><a href="{{ path('app_panier_edit', {'id': panier.id}) }}">Modifier</a></td>
                                         <td>{{ include('panier/_delete_form.html.twig') }}</td>
-
-
+                                        <td><img src="{{ panier.getIdproduit().getImgURL() }}" alt="Image Produit" style="width: 104px; height: auto;"></td>
                                     </tr>
                                 {% else %}
                                     <tr>
@@ -75,19 +77,77 @@
                                 </tbody>
                             </table>
                             <a href="{{ path('app_panier_new') }}">Ajouter au Panier</a>
-
                         </div>
-                        <!-- End -->
+                        <!-- End Shopping cart table -->
+                        <div style="padding-left: 450px" class="pagination">
+                            {% if pagerfanta.hasPreviousPage() %}
+                                <a href="{{ path('app_panier_index', {'page': pagerfanta.getCurrentPage() - 1}) }}" style="background-color: black; color: white; padding: 5px; margin-right: 5px;">Previous</a>
+                            {% endif %}
+
+                            {% for page in 1..pagerfanta.getNbPages() %}
+                                {% if pagerfanta.getCurrentPage() == page %}
+                                    <span style="background-color: black; color: white; padding: 5px; margin-right: 5px;">{{ page }}</span>
+                                {% else %}
+                                    <a href="{{ path('app_panier_index', {'page': page}) }}" style="background-color: black; color: white; padding: 5px; margin-right: 5px;">{{ page }}</a>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if pagerfanta.hasNextPage() %}
+                                <a href="{{ path('app_panier_index', {'page': pagerfanta.getCurrentPage() + 1}) }}" style="background-color: black; color: white; padding: 5px; margin-right: 5px;">Next</a>
+                            {% endif %}
+                        </div>
+                        </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
-    </div>
-
-
+    <a href="{{ path('app_download_pdf') }}" class="btn btn-black">
+        Télécharger PDF
+    </a>
+    <a href="{{ path('app_panier_export_excel') }}" class="btn btn-black">
+        Télécharger Excel
+    </a>
 {% endblock %}
 
-{% include 'Footer.html.twig' %}
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var quantiteInputs = document.querySelectorAll('.quantite-input');
+
+            quantiteInputs.forEach(function(input) {
+                input.addEventListener('change', function() {
+                    var tr = input.closest('tr');
+                    var prixUnitaire = parseFloat(tr.querySelector('td:nth-child(3)').innerText);
+                    var quantite = parseInt(input.value);
+                    var sousTotal = prixUnitaire * quantite;
+                    var panierId = tr.querySelector('td:first-child').innerText;
+
+                    tr.querySelector('.sousTotal').innerText = sousTotal.toFixed(2);
+
+                    fetch('/panier/' + panierId + '/update-quantity', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ quantite: quantite })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erreur lors de la mise à jour de la quantité');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erreur:', error);
+                        });
+                });
+            });
+        });
+    </script>
+<script>
+    document.getElementById('quantiteFiltre').addEventListener('change', function() {
+        document.getElementById('filter-form').submit(); // Soumet le formulaire lorsque la valeur change
+    });
+
+</script>
+{% endblock %}

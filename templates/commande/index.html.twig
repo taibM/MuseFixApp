@@ -9,88 +9,223 @@
     <link rel="stylesheet" href="{{ asset('css/Panierindex.css') }}">
 {% endblock %}
 
-
 {% block body %}
     <h1 style="padding-left: 575px;padding-top: 20px">Vos Commandes</h1>
-<div style="padding-top: 40px" class="px-4 px-lg-0">
-<div class="pb-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+    <div style="padding-top: 40px" class="px-4 px-lg-0">
+        <div class="pb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+                        <!-- Shopping cart table -->
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="p-2 px-3 text-uppercase">IDCommande</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Date de Commande</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Status</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Mode de Paiement</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Adresse de Livraison</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Frais de Livraison</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Total</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Afficher</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Modifier</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Supprimer</div>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for commande in commandes %}
+                                    <tr>
+                                        <td>{{ commande.id }}</td>
+                                        <td>{{ commande.orderDate ? commande.orderDate|date('Y-m-d H:i:s') : '' }}</td>
+                                        <td>{{ commande.status }}</td>
+                                        <td>{{ commande.modePaiement }}</td>
+                                        <td>{{ commande.adresseLivraison }}</td>
+                                        <td><input type="number" id="fraisLivraison_{{ commande.id }}" class="frais-livraison-input" value="{{ commande.fraisLivraison }}" data-ancien="{{ commande.fraisLivraison }}"></td>
+                                        <td><span class="total">{{ commande.total }}</span></td>
+                                        <td><a href="{{ path('app_commande_show', {'id': commande.id}) }}">Afficher</a></td>
+                                        <td><a href="{{ path('app_commande_edit', {'id': commande.id}) }}">Modifier</a></td>
+                                        <td>{{ include('commande/_delete_form.html.twig') }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5">no records found</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <button id="checkout-button">Payer maintenant</button>
 
-                <!-- Shopping cart table -->
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col" class="border-0 bg-light">
-                                <div class="p-2 px-3 text-uppercase">IDCommande</div>
-                            </th>
-                            <th scope="col" class="border-0 bg-light">
-                                <div class="py-2 text-uppercase">Date de Commande</div>
-                            </th>
-                            <th scope="col" class="border-0 bg-light">
-                                <div class="py-2 text-uppercase">Status</div>
-                            </th>
-                            <th scope="col" class="border-0 bg-light">
-                                <div class="py-2 text-uppercase">Mode de Paiement</div>
-                            </th>
-                            <th scope="col" class="border-0 bg-light">
-                                <div class="py-2 text-uppercase">Adresse de Livraison</div>
-                            </th>
-                            <th scope="col" class="border-0 bg-light">
-                                <div class="py-2 text-uppercase">Frais de Livraison</div>
-                            </th>
-                            <th scope="col" class="border-0 bg-light">
-                                <div class="py-2 text-uppercase">Total</div>
-                            </th>
-                            <th scope="col" class="border-0 bg-light">
-                                <div class="py-2 text-uppercase">Afficher</div>
-                            </th>
-                            <th scope="col" class="border-0 bg-light">
-                                <div class="py-2 text-uppercase">Modifier</div>
-                            </th>
-                            <th scope="col" class="border-0 bg-light">
-                                <div class="py-2 text-uppercase">Supprimer</div>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        </td>
-
-                        {% for commande in commandes %}
-                            <tr>
-                                <td>{{ commande.id }}</td>
-                                <td>{{ commande.orderDate ? commande.orderDate|date('Y-m-d H:i:s') : '' }}</td>
-                                <td>{{ commande.status }}</td>
-                                <td>{{ commande.modePaiement }}</td>
-                                <td>{{ commande.adresseLivraison }}</td>
-                                <td>{{ commande.fraisLivraison }}</td>
-                                <td>{{ commande.total }}</td>
-                                <td><a href="{{ path('app_commande_show', {'id': commande.id}) }}">Afficher</a></td>
-                                <td><a href="{{ path('app_commande_edit', {'id': commande.id}) }}">Modifier</a>
-                                </td>
-                                <td>{{ include('commande/_delete_form.html.twig') }}</td>
-
-
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="5">no records found</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                    <a href="{{ path('app_commande_new') }}">Ajouter une commande</a>
-
+                            <div>Total complet : <span id="total-complet"></span></div>
+                            <a href="{{ path('app_commande_new') }}">Ajouter une commande</a>
+                        </div>
+                    </div>
                 </div>
-                <!-- End -->
             </div>
         </div>
-
+    </div>
 {% endblock %}
 
-    </div>
-</div>
-{% include 'Footer.html.twig' %}
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var fraisLivraisonInputs = document.querySelectorAll('.frais-livraison-input');
+
+            fraisLivraisonInputs.forEach(function(input) {
+                input.addEventListener('change', function() {
+                    var tr = input.closest('tr');
+                    var fraisLivraison = parseFloat(input.value);
+                    var ancienFraisLivraison = parseFloat(tr.querySelector('.frais-livraison-input').getAttribute('data-ancien')); // Récupérer les anciens frais de livraison
+                    var totalInitial = parseFloat(tr.querySelector('.total-initial').innerText); // Total initial
+                    var differenceLivraison = fraisLivraison - ancienFraisLivraison; // Calculer la différence de frais de livraison
+                    var nouveauTotal = totalInitial + differenceLivraison; // Mettre à jour le total
+                    var commandeId = tr.querySelector('td:first-child').innerText;
+
+                    tr.querySelector('.total').innerText = nouveauTotal.toFixed(2);
+
+                    fetch('/commande/' + commandeId + '/update-total', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ total: nouveauTotal, differenceLivraison: differenceLivraison }) // Envoyer la différence de frais de livraison
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erreur lors de la mise à jour du total');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erreur:', error);
+                        });
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var fraisLivraisonInputs = document.querySelectorAll('.frais-livraison-input');
+            var totalCompletElement = document.getElementById('total-complet');
+
+            // Fonction pour mettre à jour le total complet
+            function updateTotalComplet() {
+                var totalComplet = 0;
+                var totalElements = document.querySelectorAll('.total');
+
+                totalElements.forEach(function(element) {
+                    totalComplet += parseFloat(element.innerText);
+                });
+
+                totalCompletElement.innerText = totalComplet.toFixed(2);
+            }
+
+            // Mettre à jour le total complet au chargement de la page
+            updateTotalComplet();
+
+            fraisLivraisonInputs.forEach(function(input) {
+                input.addEventListener('change', function() {
+                    var tr = input.closest('tr');
+                    var fraisLivraison = parseFloat(input.value);
+                    var ancienFraisLivraison = parseFloat(input.getAttribute('data-ancien'));
+                    var ancienTotal = parseFloat(tr.querySelector('.total').innerText);
+                    var nouveauTotal = ancienTotal - ancienFraisLivraison + fraisLivraison;
+                    var commandeId = tr.querySelector('td:first-child').innerText;
+
+                    tr.querySelector('.total').innerText = nouveauTotal.toFixed(2);
+
+                    // Mettre à jour le total complet
+                    updateTotalComplet();
+
+                    fetch('/commande/' + commandeId + '/update-total', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ total: nouveauTotal })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erreur lors de la mise à jour du total');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erreur:', error);
+                        });
+                });
+            });
+        });
+
+        var stripe = Stripe('{{ 'pk_test_51OrLeRLwWiZBvlVZ55Z0El9zPOSWuaguBfY6C5evqU690kCisEzfWQoLyv3eMSnHBqYvtdL9Yli3f8IhEdZfTKdW00Niuy22M8' }}'); // Remplacez par votre clé publique Stripe
+        var checkoutButton = document.getElementById('checkout-button');
+
+        checkoutButton.addEventListener('click', function () {
+            // Créez une session de paiement avec Stripe Checkout
+            fetch('{{ path('create_checkout_session') }}', {
+                method: 'POST',
+            })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(session) {
+                    // Redirigez l'utilisateur vers Stripe Checkout
+                    return stripe.redirectToCheckout({ sessionId: session.id });
+                })
+                .then(function(result) {
+                    // Gérez le résultat de la redirection si nécessaire
+                })
+                .catch(function(error) {
+                    console.error('Erreur lors de la création de la session de paiement :', error);
+                });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var fraisLivraisonInputs = document.querySelectorAll('.frais-livraison-input');
+
+            fraisLivraisonInputs.forEach(function(input) {
+                input.addEventListener('change', function() {
+                    var commandeId = input.getAttribute('id').split('_')[1]; // Extraire l'ID de la commande
+                    var nouveauFraisLivraison = parseFloat(input.value);
+
+                    fetch('/commande/' + commandeId + '/update-frais-livraison', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ fraisLivraison: nouveauFraisLivraison }) // Envoyer les nouveaux frais de livraison au contrôleur
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erreur lors de la mise à jour des frais de livraison');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erreur:', error);
+                        });
+                });
+            });
+        });
+    </script>
+{% endblock %}

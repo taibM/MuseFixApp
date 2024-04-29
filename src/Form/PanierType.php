@@ -7,6 +7,7 @@ use App\Entity\Produit;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -19,7 +20,10 @@ class PanierType extends AbstractType
         $builder
             ->add('qte')
             ->add('prixUnite')
-            ->add('sousTotal')
+            ->add('sousTotal', TextType::class, [
+                'disabled' => true, // Rend le champ en lecture seule
+                'attr' => ['readonly' => true], // Désactive l'édition du champ
+            ])
             ->add('userID', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',

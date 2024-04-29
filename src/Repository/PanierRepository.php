@@ -20,6 +20,47 @@ class PanierRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Panier::class);
     }
+    // src/Repository/PanierRepository.php
+
+    public function findGreaterThanQuantity(int $quantiteFiltre): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.qte > :quantiteFiltre')
+            ->setParameter('quantiteFiltre', $quantiteFiltre)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findGreaterThanSubtotal(float $sousTotalFiltre): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.sousTotal > :sousTotalFiltre')
+            ->setParameter('sousTotalFiltre', $sousTotalFiltre)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findWithFilters(?int $quantiteFiltre, ?float $sousTotalFiltre): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        if ($quantiteFiltre !== null) {
+            $qb->andWhere('p.qte > :quantiteFiltre')
+                ->setParameter('quantiteFiltre', $quantiteFiltre);
+        }
+
+        if ($sousTotalFiltre !== null) {
+            $qb->andWhere('p.sousTotal > :sousTotalFiltre')
+                ->setParameter('sousTotalFiltre', $sousTotalFiltre);
+        }
+
+        return $qb->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
 
 //    /**
 //     * @return Panier[] Returns an array of Panier objects

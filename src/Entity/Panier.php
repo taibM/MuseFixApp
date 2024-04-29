@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-
 use App\Repository\PanierRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PanierRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Panier
 {
     #[ORM\Id]
@@ -22,7 +21,6 @@ class Panier
     #[Assert\Positive(message:"La quantité doit être un nombre positif.")]
     private ?int $qte = null;
 
-
     #[ORM\Column(name: "prixUnite")]
     #[Assert\NotBlank(message:"le prix unitaire est requis.")]
     #[Assert\Positive(message:"Le prix unitaire doit être un nombre positif.")]
@@ -33,16 +31,13 @@ class Panier
     #[Assert\Positive(message:"Le sous-total doit être un nombre positif.")]
     private ?float $sousTotal = null;
 
-
     #[ORM\ManyToOne(inversedBy: 'paniers')]
     #[ORM\JoinColumn(name: "userID", referencedColumnName: "id")]
     private ?User $userid = null;
 
-
     #[ORM\ManyToOne(inversedBy: "paniers")]
     #[ORM\JoinColumn(name: "idProduit", referencedColumnName: "id")]
     private ?Produit $idproduit = null;
-
 
     public function getId(): ?int
     {
@@ -85,8 +80,6 @@ class Panier
         return $this;
     }
 
-
-
     public function getIdproduit(): ?Produit
     {
         return $this->idproduit;
@@ -112,4 +105,57 @@ class Panier
     }
 
 
+    /**
+     * Calculer le sous-total du panier pour cet article.
+     */
+    public function calculerSousTotal(): float
+    {
+        return $this->qte * $this->prixUnite;
+    }
+
+    /**
+     * Mettre à jour le sous-total du panier.
+     */
+    public function mettreAJourSousTotal(): void
+    {
+        $this->sousTotal = $this->calculerSousTotal();
+    }
+
+    /**
+     * Calculer le total du panier.
+     *
+     * @param Collection|Panier[] $paniers
+     * @return float
+     */
+    public static function calculerTotal(Collection $paniers): float
+    {
+        $total = 0;
+        foreach ($paniers as $panier) {
+            $total += $panier->getSousTotal();
+        }
+        return $total;
+    }
+
+    /**
+     * Mettre à jour le sous-total et le total du panier.
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function mettreAJourTotals(): void
+    {
+        $this->mettreAJourSousTotal();
+        // Vous pouvez également mettre à jour le total du panier ici
+        // en utilisant la méthode calculerTotal si nécessaire.
+    }
+
+    /**
+     * Mettre à jour le sous-total lorsque l'entité est chargée.
+     *
+     * @ORM\PostLoad
+     */
+    public function mettreAJourSousTotalOnLoad(): void
+    {
+        $this->mettreAJourSousTotal();
+    }
 }
