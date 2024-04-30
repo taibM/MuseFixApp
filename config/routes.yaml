@@ -26,3 +26,7 @@ app_user_edit:
   controller: App\Controller\UserController::edit
   methods: GET|POST
 
+check_login:
+  path: /check_login
+  controller: App\Controller\SecurityController::checkLogin
+  methods: [POST]

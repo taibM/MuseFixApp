@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
@@ -10,16 +11,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 
 
-/**
- * @method string getUserIdentifier()
- */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $userid = null;
+
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -113,12 +113,15 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSignupdate(): ?\DateTimeInterface
+
+
+
+    public function getSignupdate(): ?DateTime
     {
         return $this->signupdate;
     }
 
-    public function setSignupdate(\DateTime $signupdate): static
+    public function setSignupdate(DateTime $signupdate): static
     {
         $this->signupdate = $signupdate;
 
@@ -161,16 +164,26 @@ class User implements UserInterface
         return $this;
     }
 
+    public function setPassword(string $password): self
+    {
+        // Assuming $password is already hashed when setting
+        $this->passwd = $password;
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        // Return the hashed password
+        return $this->passwd;
+    }
+
 
     public function getRoles()
     {
         // TODO: Implement getRoles() method.
     }
 
-    public function getPassword()
-    {
-        // TODO: Implement getPassword() method.
-    }
+
 
     public function getSalt()
     {
@@ -182,9 +195,10 @@ class User implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
-        // TODO: Implement getUsername() method.
+        return $this->email;
+
     }
 
     public function __call(string $name, array $arguments)

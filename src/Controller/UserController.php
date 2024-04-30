@@ -10,10 +10,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+
 
 #[Route('/user')]
 class UserController extends AbstractController
 {
+
+    private PasswordHasherFactoryInterface $passwordHasherFactory;
+    private $passwordHasher;
+
+    public function __construct(PasswordHasherFactoryInterface $passwordHasherFactory)
+    {
+        $this->passwordHasherFactory = $passwordHasherFactory;
+        // Initialize the password hasher using the factory
+        $this->passwordHasher = $this->passwordHasherFactory->getPasswordHasher(User::class);
+    }
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
@@ -26,10 +38,16 @@ class UserController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $user->setPassword('plain_password');
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Hash the plain password before persisting the user
+            $hashedPassword = $this->passwordHasher->hash($user->getPassword());
+            $user->setPassword($hashedPassword);
+
+
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -41,6 +59,7 @@ class UserController extends AbstractController
             'form' => $form,
         ]);
     }
+
 
     #[Route('/{userid}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response

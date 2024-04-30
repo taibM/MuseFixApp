@@ -26,22 +26,25 @@
                         {% if error %}
                             <div class="alert alert-danger">{{ error }}</div>
                         {% endif %}
-                        <form action="{{ path('check_login') }}" method="post" class="tm-login-form">
-                            <div class="input-group">
-                                <label for="email" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Username</label>
-                                <input type="text" name="_email" id="email" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" required>
+                     <form action="{{ path('check_login') }}" method="post" class="tm-login-form">
+                         {% if error %}
+                             <div class="alert alert-danger">{{ error }}</div>
+                         {% endif %}
+                         <!-- CSRF token -->
+                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                         <div class="input-group">
+                             <label for="email" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Username</label>
+                             <input type="text" name="_email" id="email" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" required>
+                         </div>
+                         <div class="input-group mt-3">
+                             <label for="password" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Password</label>
+                             <input type="password" name="_password" id="password" class="form-control validate" required>
+                         </div>
+                         <div class="input-group mt-3">
+                             <button type="submit" class="btn btn-primary d-inline-block mx-auto">Login</button>
+                         </div>
+                     </form>
 
-
-                            </div>
-                            <div class="input-group mt-3">
-                                <label for="password" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Password</label>
-<input type="password" name="_password" id="password" class="form-control validate" required>                            </div>
-                            <div class="input-group mt-3">
-                                <button type="submit" class="btn btn-primary d-inline-block mx-auto">Login</button>
-                            </div>
-                            <div class="input-group mt-3">
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
