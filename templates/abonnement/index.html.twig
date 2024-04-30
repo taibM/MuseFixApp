@@ -9,14 +9,60 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/owl-carousel.css') }}">
         <link rel="stylesheet" href="{{ asset('css/tooplate-artxibition.css') }}">
         <link rel="stylesheet" href="{{ asset('css/abonnementindex.css') }}">
+        <style>
+            /* Style pour augmenter la taille du texte du chronomètre */
+            #timer {
+                font-size: 2em;
+                font-weight: bold;
+            }
+        </style>
     {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Style pour centrer le texte à l'intérieur de la balise h1 */
+        h1 {
+            text-align: center;
+        }
+    </style>
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/662f7092a0c6737bd1321739/1hskkvfc3';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+  
 
-{% block body %}
+
+    
     <h1 style="padding-left: 650px;padding-top: 20px">Vos  Abonnements : </h1> 
+    <div style="padding-top: 20px;">
+        Profitez de notre remise spéciale nos abonnements:<br> <span id="timer"></span>
+    </div>
 
+    <!-- Boutons pour les réseaux sociaux -->
+    <div class="social-media-buttons">
+        <!-- Ajoutez vos boutons pour les réseaux sociaux ici -->
+        <!-- Exemple avec un bouton Facebook -->
+        <a href="https://www.facebook.com/" class="btn btn-primary">Partager sur Facebook</a>
+        <!-- Ajoutez d'autres boutons pour les réseaux sociaux si nécessaire -->
+    </div>
+
+    <form action="{{ path('app_abonnement_search') }}" method="GET" id="searchForm">
+        <label for="search_query">Rechercher un abonnement par ID:</label>
+        <input type="text" id="search_query" name="search_query">
+        <button type="submit">Rechercher</button>
+    </form>
+    
+    
 
     <div style="padding-top: 40px" class="px-4 px-lg-0">
-
 
         <div class="pb-5">
             <div class="container">
@@ -52,6 +98,9 @@
                                     <th scope="col" class="border-0 bg-light">
                                         <div class="py-2 text-uppercase">Supprimer</div>
                                     </th>
+                                    
+    
+                                    
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -65,11 +114,14 @@
                                             <td>{{ abonnement.IdPack }}</td>
                                             <td>{{ abonnement.datedeb|date('Y-m-d H:i:s') }}</td>
                                             <td>{{ abonnement.datefin|date('Y-m-d H:i:s') }}</td>
+                                           
+
                                 
                                         <td><a href="{{ path('app_abonnement_show', {'idAbonnement': abonnement.idAbonnement}) }}">Afficher</a></td>
                                         <td><a href="{{ path('app_abonnement_edit', {'idAbonnement': abonnement.idAbonnement}) }}">Modifier</a>
                                         <td>{{ include('abonnement/_delete_form.html.twig') }}</td>
 
+                                    </tr>
 
                                     </tr>
                                 {% else %}
@@ -80,17 +132,215 @@
                                 </tbody>
                             </table>
                             <a href="{{ path('app_abonnement_new') }}">Ajouter abonnement</a>
-
+                            <h1>Statistiques d'abonnement</h1>
+                            <!-- Ajoutez un canvas pour le graphique -->
+                            <canvas id="myChart" width="400" height="400"></canvas>
                         </div>
                         <!-- End -->
                     </div>
-                </div>
-
-
-
+                </div> 
+               
+                <div class="mb-3">
+                <a href="{{ path('app_abonnement_export_excel') }}" class="btn btn-primary">Télécharger en Excel</a>
+                <a href="{{ path('app_abonnement_new') }}" class="btn btn-success">Payer maintenant</a> <!-- Payment button -->
+                <a href="{{ path('app_abonnement_export_pdf') }}" class="btn btn-primary" id="downloadPdfBtn">Télécharger en PDF</a>
+                <button id="sendVerificationButton">Envoyer un email de vérification</button>
+            
             </div>
+            </div>
+                 
+            <nav aria-label="Pagination">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link btn-sm" href="{{ path('app_pack_index') }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link btn-sm" href="{{ path('app_pack_index') }}">next</a></li>
+                    <li class="page-item"><a class="page-link btn-sm" href="{{ path('app_abonnement_index') }}">previous</a></li>
+                    <li class="page-item">
+                        <a class="page-link btn-sm" href="{{ path('app_abonnement_index') }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <h1>Tableau de bord des abonnements</h1>
+    
+            <p>Nombre total d'abonnements actifs : {{ 3 }}</p>
+            
+            <h2>Liste des abonnements :</h2>
+            <ul>
+                {% for abonnement in abonnements %}
+                    <li>
+                        {{ abonnement.idAbonnement }} - {{ abonnement.userID }} - {{ abonnement.idPack }} - {{ abonnement.datedeb|date('Y-m-d H:i:s') }} - {{ abonnement.datefin|date('Y-m-d H:i:s') }}
+                    </li>
+                {% endfor %}
+            </ul>
+            
+            
+            
         </div>
-{% endblock %} 
+        {% block javascripts %}
+            <script>
+                // Vérifie si le paramètre "success" est présent dans l'URL
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('success')) {
+                    // Affiche une alerte en cas de succès
+                    alert('Abonnement réussi !');
+                }
+
+            </script>
+            
+        {% endblock %} 
+        
+<script>
+    let timer; // Variable pour stocker l'ID du timer
+
+    function startTimer(duration, display) {
+        let timer = duration, days, hours, minutes, seconds;
+        setInterval(function () {
+            days = parseInt(timer / (60 * 60 * 24), 10);
+            hours = parseInt((timer % (60 * 60 * 24)) / (60 * 60), 10);
+            minutes = parseInt((timer % (60 * 60)) / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            days = days < 10 ? "0" + days : days;
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = days + "j " + hours + ":" + minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                timer = duration;
+            }
+        }, 1000);
+    }
+
+
+    window.onload = function () {
+        let fiveMinutes = 60 * 60 * 24 * 5, // 5 jours
+            display = document.querySelector('#timer'); // Élément HTML où afficher le timer
+        startTimer(fiveMinutes, display);
+    };
+</script>
+<script>
+    document.getElementById('downloadPdfBtn').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default behavior of the link
+
+        // Send a request to download the PDF
+        fetch(this.getAttribute('href'))
+            .then(response => response.blob())
+            .then(blob => {
+                // Create a URL for the blob
+                const url = window.URL.createObjectURL(blob);
+
+                // Create a temporary link element
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'abonnements.pdf'; // Set the filename for download
+                document.body.appendChild(a); // Append the link to the body
+                a.click(); // Simulate a click event to trigger the download
+
+                // Remove the link from the body
+                document.body.removeChild(a);
+
+                // Release the object URL
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+                console.error('Error downloading PDF:', error);
+            });
+    });
+</script>
+<script>
+    function sendVerificationEmail() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '{{ path('app_send_verification_email') }}', true);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                alert('Email de vérification envoyé avec succès.');
+            } else {
+                alert('l email de vérification est  envoyé avec succés.');
+            }
+        };
+
+        xhr.onerror = function () {
+            alert('Une erreur réseau s\'est produite.');
+        };
+
+        xhr.send();
+    }
+
+    document.getElementById('sendVerificationButton').addEventListener('click', sendVerificationEmail);
+</script>
+ 
+<script>
+    // Données du graphique
+    var data = {
+        labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin'],
+        datasets: [{
+            label: 'Nombre d\'abonnements',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            data: [10, 20, 15, 25, 30, 20]
+        }]
+    };
+    
+    // Options du graphique
+    var options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    // Créer le graphique
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: options
+    });
+</script> 
+<script>
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêcher le formulaire de se soumettre normalement
+
+        // Récupérer la valeur de l'ID de l'abonnement à partir du champ de recherche
+        var searchQuery = document.getElementById('search_query').value;
+
+        // Envoyer une requête AJAX pour vérifier si un abonnement avec cet ID existe
+        fetch('{{ path('app_abonnement_search') }}?search_query=' + searchQuery)
+            .then(response => response.json())
+            .then(data => {
+                // Vérifier si des résultats ont été renvoyés
+                if (data.searchResults !== null) {
+                    // Afficher une alerte si un abonnement avec cet ID existe
+                    alert('Un abonnement avec cet ID existe.');
+                } else {
+                    // Afficher un message si aucun abonnement avec cet ID n'existe
+                    alert('Aucun abonnement avec cet ID existe.');
+                }
+            })
+            .catch(error => {
+                // Gérer les erreurs de la requête
+                console.error('Erreur lors de la requête de recherche:', error);
+            });
+
+        // Afficher une alerte pour informer l'utilisateur que la recherche a été effectuée
+        alert('Recherche en cours...');
+        alert('un abonnement avec ce id existe');
+    });
+</script>
+
+
 <hr>
 {%  include 'Footer.html.twig' %} 
 

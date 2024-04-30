@@ -8,9 +8,38 @@
     <link rel="stylesheet" href="{{ asset('css/tooplate-artxibition.css') }}">
     <link rel="stylesheet" href="{{ asset('css/abonnementindex.css') }}">
 {% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    /* Style pour centrer le texte à l'intérieur de la balise h1 */
+    h1 {
+        text-align: center;
+    }
+</style>
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/662f7092a0c6737bd1321739/1hskkvfc3';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
 
+
+
+    
 {% block body %}
     <h1 style="padding-left: 650px;padding-top: 20px">Vos Packs:</h1> 
+      <!-- Affichage de la somme des prix -->
+    <div style="padding-top: 20px;">
+        <strong>Total des prix des packs : {{ totalPrice }} €</strong>
+    </div>
+                   
+ 
 
     <div style="padding-top: 40px" class="px-4 px-lg-0">
         <div class="pb-5">
@@ -40,6 +69,8 @@
                                                 <a href="{{ path('app_pack_show', {'idPack': pack.idPack}) }}">Afficher</a>
                                                 <a href="{{ path('app_pack_edit', {'idPack': pack.idPack}) }}">Modifier</a>
                                                 {{ include('pack/_delete_form.html.twig') }}
+                                                
+                                              
                                             </td>
                                         </tr>
                                     {% else %}
@@ -50,13 +81,138 @@
                                 </tbody>
                             </table>
                             <a href="{{ path('app_pack_new') }}">Ajouter Pack</a>
+                            <h1 >Statistiques d'achat de packs </h1>
+    <!-- Ajoutez un canvas pour le graphique -->
+                        <canvas id="myChart" width="400" height="400"></canvas>
                         </div>
+                        <ul id="pack-list">
+                            {# Your pack items will be inserted here dynamically #}
+                        </ul>
+                        <div id="pagination">
+                            {# Pagination controls will be inserted here dynamically #}
+                        </div>
+                        
+
                         <!-- End -->
                     </div>
-                </div>
+                 
+                    <a href="{{ path('app_pack_export_pdf') }}" id="downloadPdfButton" class="btn btn-primary">Télécharger en PDF</a>
+                    <td><a href="{{ path('generate_qr_code', {'id': 6}) }}" class="btn btn-info">QR Code</a></td>
+
+                </div> 
+               
+                
             </div>
         </div>
+        
     </div>
+    
+
+
+       
+    <nav aria-label="Pagination">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link btn-sm" href="{{ path('app_pack_index') }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link btn-sm" href="{{ path('app_pack_index') }}">next</a></li>
+            <li class="page-item"><a class="page-link btn-sm" href="{{ path('app_abonnement_index') }}">previous</a></li>
+            <li class="page-item">
+                <a class="page-link btn-sm" href="{{ path('app_abonnement_index') }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container mt-5">
+        <h2>Offres spéciales et promotions</h2>
+        <div class="row">
+            {% for promotion in promotions %}
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ promotion.title }}</h5>
+                            <p class="card-text">{{ promotion.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <h2>Ajouter un commentaire :</h2>
+    <form action="{{ path('app_pack_comment', {'idPack': 12}) }}" method="POST">
+        <div>
+            <label for="comment">Votre commentaire :</label><br>
+            <textarea id="comment" name="comment" rows="4" cols="50"></textarea>
+        </div>
+        <br>
+        <button type="submit">Envoyer</button>
+    </form>
+</div>
+    
+
 {% endblock %}
+<script>
+    document.getElementById('downloadPdfButton').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default link behavior
+        
+        // Get the URL of the PDF download route
+        var pdfUrl = this.getAttribute('href');
+        
+        // Create a hidden anchor element
+        var hiddenAnchor = document.createElement('a');
+        hiddenAnchor.href = pdfUrl;
+        hiddenAnchor.target = '_blank';
+        hiddenAnchor.style.display = 'none';
+        document.body.appendChild(hiddenAnchor);
+        
+        // Simulate a click on the hidden anchor element to trigger the download
+        hiddenAnchor.click();
+        
+        // Clean up: remove the hidden anchor element from the DOM
+        document.body.removeChild(hiddenAnchor);
+    });
+</script>
+<script>
+    // Données du graphique
+    var data = {
+        labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin'],
+        datasets: [{
+            label: 'statistique d achats de packs', 
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            data: [10, 20, 15, 25, 30, 20]
+        }]
+    };
+    
+    // Options du graphique
+    var options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    // Créer le graphique
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: options
+    });
+</script>
+
+
+
 <hr>
 {%  include 'Footer.html.twig' %}
+
+
+  
+ 
