@@ -12,14 +12,17 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class LoginController extends AbstractController
+class SecurityController extends AbstractController
 {
     private LoggerInterface $logger;
+
+
     private UserPasswordHasherInterface $passwordHasher;
 
-    public function __construct(LoggerInterface $logger, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(LoggerInterface $logger,UserPasswordHasherInterface $passwordHasher)
     {
         $this->logger = $logger;
+
         $this->passwordHasher = $passwordHasher;
     }
 
@@ -50,10 +53,14 @@ class LoginController extends AbstractController
 
         // Retrieve the user from the database based on the username
         $user = $userRepository->findOneBy(['email' => $username]);
-
         if ($user) {
             // Get the hashed password from the user entity
             $storedHashedPassword = $user->getPassword();
+
+            // Log the plaintext password, hashed password, and result of password validation for debugging purposes
+            $this->logger->debug('Plaintext Password: ' . $plaintextPassword);
+            $this->logger->debug('Stored Hashed Password: ' . $storedHashedPassword);
+            $this->logger->debug('Is Password Valid: ' . ($this->passwordHasher->isPasswordValid($user, $plaintextPassword) ? 'true' : 'false'));
 
             // Verify the plaintext password against the stored hashed password
             if ($this->passwordHasher->isPasswordValid($user, $plaintextPassword)) {

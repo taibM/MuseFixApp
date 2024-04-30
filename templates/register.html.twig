@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registration Page - Dashboard Admin Template</title>
+    <link rel="stylesheet" href="{{ asset('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600') }}">
+    <link rel="stylesheet" href="{{ asset('https://use.fontawesome.com/releases/v5.7.2/css/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tooplate.css') }}">
+</head>
+<body class="bg03">
+<div class="container">
+    <div class="row tm-mt-big">
+        <div class="col-12 mx-auto tm-login-col">
+            <div class="bg-white tm-block">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <i class="fas fa-3x fa-tachometer-alt tm-site-icon text-center"></i>
+                        <h2 class="tm-block-title mt-3">Registration</h2>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error }}</div>
+                        {% endif %}
+                        {{ form_start(form, {'attr': {'class': 'tm-login-form'}, 'novalidate': 'novalidate'}) }}
+                        {{ form_errors(form) }}
+                        <div class="input-group">
+                            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label'}}) }}
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7'}}) }}
+                        </div>
+                        <div class="input-group mt-3">
+                            {{ form_label(form.prenom, 'Prenom', {'label_attr': {'class': 'col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label'}}) }}
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control validate'}}) }}
+                        </div>
+                        <div class="input-group mt-3">
+                            {{ form_label(form.email, 'Email', {'label_attr': {'class': 'col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label'}}) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control validate'}}) }}
+                        </div>
+                        <div class="input-group mt-3">
+                            {{ form_label(form.passwd.first, 'Password', {'label_attr': {'class': 'col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label'}}) }}
+                            {{ form_widget(form.passwd.first, {'attr': {'class': 'form-control validate'}}) }}
+                        </div>
+                        <div class="input-group mt-3">
+                            {{ form_label(form.passwd.second, 'Repeat Password', {'label_attr': {'class': 'col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label'}}) }}
+                            {{ form_widget(form.passwd.second, {'attr': {'class': 'form-control validate'}}) }}
+                        </div>
+
+                        <div class="input-group mt-3">
+                            {{ form_label(form.adresse, 'Adresse', {'label_attr': {'class': 'col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label'}}) }}
+                            {{ form_widget(form.adresse, {'attr': {'class': 'form-control validate'}}) }}
+                        </div>
+                        <div class="input-group mt-3">
+                            {{ form_label(form.tel, 'Telephone', {'label_attr': {'class': 'col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label'}}) }}
+                            {{ form_widget(form.tel, {'attr': {'class': 'form-control validate'}}) }}
+                        </div>
+                        <div class="input-group mt-3">
+                            <button type="submit" class="btn btn-primary d-inline-block mx-auto">Register</button>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="row tm-mt-big">
+        <div class="col-12 font-weight-light text-center">
+        </div>
+    </footer>
+</div>
+</body>
+</html>
