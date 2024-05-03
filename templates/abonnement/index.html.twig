@@ -53,12 +53,6 @@
         <a href="https://www.facebook.com/" class="btn btn-primary">Partager sur Facebook</a>
         <!-- Ajoutez d'autres boutons pour les réseaux sociaux si nécessaire -->
     </div>
-
-    <form action="{{ path('app_abonnement_search') }}" method="GET" id="searchForm">
-        <label for="search_query">Rechercher un abonnement par ID:</label>
-        <input type="text" id="search_query" name="search_query">
-        <button type="submit">Rechercher</button>
-    </form>
     
     
 
@@ -309,36 +303,6 @@
         options: options
     });
 </script> 
-<script>
-    document.getElementById('searchForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Empêcher le formulaire de se soumettre normalement
-
-        // Récupérer la valeur de l'ID de l'abonnement à partir du champ de recherche
-        var searchQuery = document.getElementById('search_query').value;
-
-        // Envoyer une requête AJAX pour vérifier si un abonnement avec cet ID existe
-        fetch('{{ path('app_abonnement_search') }}?search_query=' + searchQuery)
-            .then(response => response.json())
-            .then(data => {
-                // Vérifier si des résultats ont été renvoyés
-                if (data.searchResults !== null) {
-                    // Afficher une alerte si un abonnement avec cet ID existe
-                    alert('Un abonnement avec cet ID existe.');
-                } else {
-                    // Afficher un message si aucun abonnement avec cet ID n'existe
-                    alert('Aucun abonnement avec cet ID existe.');
-                }
-            })
-            .catch(error => {
-                // Gérer les erreurs de la requête
-                console.error('Erreur lors de la requête de recherche:', error);
-            });
-
-        // Afficher une alerte pour informer l'utilisateur que la recherche a été effectuée
-        alert('Recherche en cours...');
-        alert('un abonnement avec ce id existe');
-    });
-</script>
 
 
 <hr>

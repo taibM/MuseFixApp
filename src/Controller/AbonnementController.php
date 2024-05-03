@@ -225,21 +225,7 @@ public function sendVerificationEmail(MailerInterface $mailer): Response
     // Répondre avec une confirmation
     return new Response('Verification email sent successfully');
 }
-#[Route('/search', name: 'app_abonnement_search', methods: ['GET'])]
-public function search(Request $request, AbonnementRepository $abonnementRepository): Response
-{
-    // Get the search query from the request
-    $searchQuery = $request->query->get('search_query');
 
-    // Perform the search in the repository
-    $searchResults = $abonnementRepository->findOneBy(['idAbonnement' => $searchQuery]);
-
-    // Render the search results in the Twig template
-    return $this->render('abonnement/search.html.twig', [
-        'searchResults' => $searchResults,
-    ]);
-
-}
 
 #[Route('/abonnement', name: 'app_abonnement_dashboard', methods: ['GET'])]
     public function dashboard(AbonnementRepository $abonnementRepository): Response
